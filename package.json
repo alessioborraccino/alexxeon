@@ -10,8 +10,10 @@
     "@testing-library/react": "^13.0.1",
     "@testing-library/user-event": "^13.5.0",
     "bulma": "^0.9.3",
+    "express": "^4.17.3",
     "foundation-sites": "^6.7.4",
     "get-youtube-id": "^1.0.1",
+    "path": "^0.12.7",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
@@ -20,7 +22,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently --names 'SERVER,CLIENT' --prefix-colors 'yellow,blue' --kill-others 'node src/server.js' 'react-scripts start' ",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -42,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^7.1.0"
   }
 }
