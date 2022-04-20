@@ -14,11 +14,10 @@ export default function AlexxEonNavbar() {
             <nav className="navbar has-background-primary-dark is-fixed-top is-spaced" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand pl-3 pt-3">
                 <div className="navbar-item">
-                    <h1 className="title is-3 is-family-monospace has-text-primary-light">
+                    <p className="title is-3 has-text-primary-light" style={{ fontFamily:'Anek Telugu'}}>
                         ALEXX EON
-                    </h1>
+                    </p>
                     </div>
-                   
                     <div className="navbar-burger has-text-primary-light" onClick={toggleBurgerMenu}>
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
