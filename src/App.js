@@ -6,8 +6,6 @@ import Bio from './components/Bio';
 function App() {
   return (
     <BrowserRouter>
-        <meta charSet="utf-8"></meta>
-        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
         <div className="main">  
         <Routes>
           <Route path="/" element={<Home />} />
