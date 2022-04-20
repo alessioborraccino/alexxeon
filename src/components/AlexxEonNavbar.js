@@ -15,7 +15,7 @@ export default function AlexxEonNavbar() {
                 <div className="navbar-brand pl-3 pt-3">
                 <div className="navbar-item">
                     <h1 className="title is-3 is-family-monospace has-text-primary-light">
-                        Alexx Eon
+                        ALEXX EON
                     </h1>
                     </div>
                    

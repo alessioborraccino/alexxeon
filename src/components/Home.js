@@ -59,12 +59,12 @@ export default function Home() {
                         </p>  
             </section>
             <section className="section">
-                <div className="columns is-8 is-centered">
+                <div className="columns is-8 is-centered is-multiline">
                     {allPostsData &&
                         allPostsData.map((post, index) => (
-                            <div className="column" key={index}>
+                            <div className="column is-half" key={index}>
                                 <div className="box has-background-white-ter has-shadow">
-                                    <h3 className="title is-family-monospace has-text-centered">{post.title}</h3>
+                                    <h3 className="title is-family-monospace has-text-centered has-text-primary-dark">{post.title}</h3>
                                     <figure class="image is-16by9">
                                         <iframe class="has-ratio" title={post.slug} width="640" height="360" src={youtubeEmbedUrlFromAnyYoutubeUrl(post.mainVideo.url)} allowFullScreen></iframe>                                
                                     </figure>
