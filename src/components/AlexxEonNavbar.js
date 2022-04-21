@@ -14,7 +14,7 @@ export default function AlexxEonNavbar() {
             <nav className="navbar has-background-primary-dark is-fixed-top is-spaced" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand pl-3 pt-3">
                 <div className="navbar-item">
-                    <p className="title is-3 has-text-primary-light" style={{ fontFamily:'Anek Telugu'}}>
+                    <p className="title is-3 has-text-primary-light" style={{ fontFamily:'Anek Telugu', fontWeight:200}}>
                         ALEXX EON
                     </p>
                     </div>

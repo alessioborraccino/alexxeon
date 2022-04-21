@@ -2,7 +2,7 @@
 @import '../node_modules/bulma/css/bulma.min.css';
 @import '../node_modules/bulma-social/css/all.min.css';
 @import '../node_modules/@fortawesome/fontawesome-free/css/brands.min.css';
-@import url('https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@100;200&display=swap');
 
 html, body {
   height: 100%;
@@ -29,3 +29,21 @@ body > footer {
   box-shadow: 3px 3px 3px rgba(170, 170, 170, 0.3);
 }
 
+.navbar-menu {
+  display: block;
+  opacity: 0;
+
+  position: absolute;   /* or float: left; width: 100%;*/
+  left: 0;
+  right: 0;
+
+  transform: translateY(-50%);
+  transition: all .3s ease-in-out;
+  pointer-events: none;
+}
+
+.navbar-menu.is-active {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}

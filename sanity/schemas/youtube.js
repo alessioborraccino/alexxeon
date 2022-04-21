@@ -10,7 +10,6 @@ const Preview = ({value}) => {
 	return (<YouTube videoId={id} />)
 }
 
-
 export default {
     name: 'youtube',
     type: 'object',
