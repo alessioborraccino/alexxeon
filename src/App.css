@@ -29,14 +29,13 @@ body > footer {
   box-shadow: 3px 3px 3px rgba(170, 170, 170, 0.3);
 }
 
+@media only screen and (max-width: 768px) {
 .navbar-menu {
   display: block;
   opacity: 0;
-
   position: absolute;   /* or float: left; width: 100%;*/
   left: 0;
   right: 0;
-
   transform: translateY(-50%);
   transition: all .3s ease-in-out;
   pointer-events: none;
@@ -46,4 +45,5 @@ body > footer {
   opacity: 1;
   transform: none;
   pointer-events: auto;
+}
 }
