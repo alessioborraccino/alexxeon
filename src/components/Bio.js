@@ -1,6 +1,7 @@
 // src/components/AllPosts.js
 
 import AlexxEonNavbar from "./AlexxEonNavbar.js";
+import SocialSection from "./SocialSection.js";
 
 export default function Bio() {
 
@@ -15,6 +16,7 @@ export default function Bio() {
             </h3>
             </div>
             </section>
+            <SocialSection></SocialSection>
         </div>
     );
 }
