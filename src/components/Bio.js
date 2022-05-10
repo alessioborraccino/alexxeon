@@ -10,7 +10,7 @@ export default function Bio() {
             <AlexxEonNavbar></AlexxEonNavbar>
             <section className="section">
                 <div className="container is-half">
-                    <p className="has-text-centered has-text-primary-light pt-2" style={{ fontFamily: 'Anek Telugu', fontSize: 24, fontWeight: 400 }}>
+                    <p className="has-text-centered has-text-primary-light pt-2 px-4" style={{ fontFamily: 'Anek Telugu', fontSize: 24, fontWeight: 400 }}>
                         Music for Alexx was always there. <br />
                         Since the beginning. <br /> <br/>
                         Born and raised in the heart of Italy, Alexx developed his love for music early on, when at 9 years old he starts taking piano lessons. <br/>
