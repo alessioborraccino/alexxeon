@@ -34,6 +34,11 @@ export default function SocialSection() {
                         <span className="fab fa-tiktok fa-lg" style={{ color: "#FFF" }}></span>
                     </span>
                 </a>
+                <a className="button is-primary" href="https://soundcloud.com/user-87781037" target="_blank" rel="noopener noreferrer">
+                    <span className="icon">
+                        <span className="fab fa-soundcloud fa-lg" style={{ color: "#FFF" }}></span>
+                    </span>
+                </a>
             </p>
         </section>
     );

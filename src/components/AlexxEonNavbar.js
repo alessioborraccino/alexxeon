@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import React from 'react';
 
 export default function AlexxEonNavbar() {
@@ -13,9 +13,13 @@ export default function AlexxEonNavbar() {
         <section className="section">
             <nav className="navbar has-background-primary-dark is-fixed-top is-spaced" role="navigation" aria-label="main navigation">
                 <div className="navbar-brand pl-3 py-1">
+                    
                 <div className="navbar-item">
+                    <NavLink to={"/"}>
                  <img src="./full-logo-white.png"></img>
+                 </NavLink>
              </div>
+             
                     <div className="navbar-burger has-text-primary-light" onClick={toggleBurgerMenu}>
                         <span aria-hidden="true"></span>
                         <span aria-hidden="true"></span>
