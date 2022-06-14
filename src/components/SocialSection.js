@@ -6,7 +6,7 @@ export default function SocialSection() {
 
         <section className="section">
             <div className="container">
-                <p className="title is-5 has-text-primary-light is-family-monospace has-text-centered pb-3">Check out my profiles</p>
+                <p className="title is-5 has-text-primary-light is-family-monospace has-text-centered pb-3">Follow me on social media!</p>
             </div>
             <p className="buttons are-medium is-centered">
                 <a className="button is-primary" href="https://www.facebook.com/Alexx-Eon-107623971924941" target="_blank" rel="noopener noreferrer">
