@@ -1,0 +1,18 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      react:
+        patterns: [react, react-dom]
+  - package-ecosystem: npm
+    directory: /sanity
+    schedule:
+      interval: weekly
+    groups:
+      sanity:
+        patterns: [sanity, "@sanity/*"]
+      react:
+        patterns: [react, react-dom]

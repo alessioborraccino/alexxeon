@@ -1,0 +1,32 @@
+name: Check site and Studio
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run check:export
+  studio:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sanity
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: sanity/package-lock.json
+      - run: npm ci
+      - run: npm run validate
+      - run: npm run build

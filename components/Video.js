@@ -1,0 +1,42 @@
+"use client";
+import { useState } from "react";
+export default function Video({ id, title, eager = false }) {
+  const [playing, setPlaying] = useState(false);
+  if (!id) return <p>Video unavailable.</p>;
+  return (
+    <div className="video">
+      {playing ? (
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1`}
+          title={`${title} — Alexx Eon video`}
+          width="640"
+          height="360"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <button
+          className="video-preview"
+          onClick={() => setPlaying(true)}
+          aria-label={`Play ${title}`}
+        >
+          <img
+            src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+            width="480"
+            height="360"
+            alt=""
+            loading={eager ? "eager" : "lazy"}
+          />
+          <span className="play">
+            ▶<span className="sr-only"> Play video</span>
+          </span>
+        </button>
+      )}
+      <noscript>
+        <a href={`https://www.youtube.com/watch?v=${id}`}>
+          Watch {title} on YouTube
+        </a>
+      </noscript>
+    </div>
+  );
+}

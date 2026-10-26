@@ -1,11 +1,5 @@
-# Sanity Blogging Content Studio
+# Alexx Eon Studio
 
-Congratulations, you have now installed the Sanity Content Studio, an open source real-time content editing environment connected to the Sanity backend.
+This Studio uses Sanity 6 and the existing `nulp5uls` production dataset. Install with `npm ci`; run `npm run dev`, `npm run validate`, and `npm run build`. See the root README for migration, deployment, publishing hooks, and rollback instructions. No dataset changes are required.
 
-Now you can do the following things:
-
-- [Read “getting started” in the docs](https://www.sanity.io/docs/introduction/getting-started?utm_source=readme)
-- Check out the example frontend: [React/Next.js](https://github.com/sanity-io/tutorial-sanity-blog-react-next)
-- [Read the blog post about this template](https://www.sanity.io/blog/build-your-own-blog-with-sanity-and-next-js?utm_source=readme)
-- [Join the community Slack](https://slack.sanity.io/?utm_source=readme)
-- [Extend and build plugins](https://www.sanity.io/docs/content-studio/extending?utm_source=readme)
+Transitive overrides patch vulnerable CLI dependencies: js-yaml and smol-toml under @vercel/frameworks, undici under the module-federation types plugin, and uuid under typeid-js. The uuid override crosses one major version; validate typeid generation and CLI/schema/build behavior when updating. Remove overrides when upstream requirements include patched releases.

@@ -1,0 +1,254 @@
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+body {
+  margin: 0;
+  background: linear-gradient(155deg, #073b39, #075427);
+  color: #f5fffc;
+  font-family: system-ui, sans-serif;
+  line-height: 1.65;
+}
+a {
+  color: inherit;
+  text-underline-offset: 0.25em;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+:focus-visible {
+  outline: 3px solid #ffdb77;
+  outline-offset: 5px;
+}
+h1,
+h2,
+h3 {
+  line-height: 1.15;
+}
+h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  margin: 0.3em 0;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.65rem;
+  margin-top: 0;
+}
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem max(1.5rem, calc((100vw - 1160px) / 2));
+  background: #00796e;
+  position: relative;
+  z-index: 2;
+}
+.site-header img {
+  display: block;
+  max-width: 55vw;
+  object-fit: contain;
+}
+.navigation {
+  display: flex;
+  gap: 1.5rem;
+  font-weight: 650;
+}
+.menu-toggle {
+  display: none;
+}
+.hero,
+.section {
+  max-width: 1160px;
+  margin: auto;
+  padding: 3rem 1.5rem;
+}
+.hero {
+  padding-block: 4rem;
+  max-width: 850px;
+  text-align: center;
+}
+.hero p {
+  font-size: 1.2rem;
+}
+.eyebrow {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.85rem !important;
+}
+.button {
+  display: inline-block;
+  background: #f5fffc;
+  color: #075047;
+  border-radius: 0.4rem;
+  padding: 0.7rem 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 0.75rem;
+}
+.music-grid,
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.card {
+  background: #fff;
+  color: #124b43;
+  padding: 1.5rem;
+  border-radius: 0.65rem;
+  box-shadow: 0 8px 24px #001d2425;
+}
+.card h3 a {
+  text-decoration: none;
+}
+.video {
+  aspect-ratio: 16/9;
+  position: relative;
+  background: #102b2b;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+.video iframe,
+.video-preview {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  padding: 0;
+}
+.video-preview {
+  position: relative;
+  background: #102b2b;
+}
+.video-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  background: #b80000;
+  border-radius: 1rem;
+  padding: 0.25rem 1.4rem;
+  font-size: 2rem;
+}
+.song {
+  max-width: 850px;
+  min-height: 60vh;
+}
+.prose {
+  font-size: 1.15rem;
+}
+.bio {
+  max-width: 1040px;
+}
+.bio > p {
+  max-width: 750px;
+  margin: 2rem auto;
+  font-size: 1.2rem;
+}
+.photo-grid {
+  margin-block: 2rem;
+}
+.photo-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+.body-image {
+  max-width: 100%;
+  height: auto;
+}
+footer {
+  max-width: 1160px;
+  margin: auto;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
+}
+.social-links a {
+  display: block;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #8ad4be;
+  border-radius: 0.4rem;
+}
+.sr-only,
+.skip-link:not(:focus) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+.skip-link:focus {
+  position: absolute;
+  z-index: 10;
+  background: white;
+  color: #123;
+  padding: 1rem;
+}
+@media (max-width: 650px) {
+  .music-grid,
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+  .site-header {
+    flex-wrap: wrap;
+  }
+  .menu-toggle {
+    display: block;
+    border: 1px solid white;
+    border-radius: 0.3rem;
+    background: none;
+    color: white;
+    padding: 0.4rem 0.7rem;
+  }
+  .navigation {
+    display: none;
+    width: 100%;
+    padding-block: 0.5rem;
+  }
+  .navigation.open {
+    display: flex;
+  }
+  .hero {
+    padding-block: 2.5rem;
+  }
+  .section {
+    padding-block: 2rem;
+  }
+  .card {
+    padding: 1rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
