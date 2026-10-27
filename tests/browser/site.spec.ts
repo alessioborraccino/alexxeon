@@ -23,6 +23,12 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
 
   const menu = page.getByRole("button", { name: "Menu" });
   await expect(menu).toHaveAttribute("aria-expanded", "false");
+  const menuSize = await menu.evaluate((element) => {
+    const { width, height } = element.getBoundingClientRect();
+    return { width, height };
+  });
+  expect(menuSize.width).toBeGreaterThanOrEqual(44);
+  expect(menuSize.height).toBeGreaterThanOrEqual(44);
   await waitForHydration(menu);
   await menu.click();
   await expect(menu).toHaveAttribute("aria-expanded", "true");
