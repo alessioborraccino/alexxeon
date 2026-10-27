@@ -1,4 +1,5 @@
 import { pageMetadata } from "../../lib/site";
+import ImageWithPlaceholder from "../../components/ImageWithPlaceholder";
 export const metadata = pageMetadata(
   "About Alexx Eon",
   "Meet Alexx Eon: an Italian-born musician blending piano, vocals, and electronic influences in personal interpretations of familiar songs.",
@@ -6,23 +7,24 @@ export const metadata = pageMetadata(
 );
 function Photo({ name, alt }: { name: string; alt: string }) {
   return (
-    <picture>
-      <source
-        type="image/avif"
-        srcSet={`/images/${name}-640.avif 640w, /images/${name}-1280.avif 1280w`}
-        sizes="(max-width: 650px) 100vw, 50vw"
-      />
-      <img
-        src={`/images/${name}-1280.webp`}
-        srcSet={`/images/${name}-640.webp 640w, /images/${name}-1280.webp 1280w`}
-        sizes="(max-width: 650px) 100vw, 50vw"
-        width="1280"
-        height="853"
-        alt={alt}
-        loading="lazy"
-        decoding="async"
-      />
-    </picture>
+    <ImageWithPlaceholder
+      src={`/images/${name}-1280.webp`}
+      sources={[
+        {
+          type: "image/avif",
+          srcSet: `/images/${name}-640.avif 640w, /images/${name}-1280.avif 1280w`,
+        },
+        {
+          type: "image/webp",
+          srcSet: `/images/${name}-640.webp 640w, /images/${name}-1280.webp 1280w`,
+        },
+      ]}
+      sizes="(max-width: 650px) 100vw, 50vw"
+      width={1280}
+      height={853}
+      alt={alt}
+      className="photo-image"
+    />
   );
 }
 export default function Bio() {

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import ImageWithPlaceholder from "./ImageWithPlaceholder";
 type VideoProps = { id?: string | null; title: string; eager?: boolean };
 export default function Video({ id, title, eager = false }: VideoProps) {
   const [playing, setPlaying] = useState(false);
@@ -23,13 +23,13 @@ export default function Video({ id, title, eager = false }: VideoProps) {
           onClick={() => setPlaying(true)}
           aria-label={`Play ${title}`}
         >
-          <Image
+          <ImageWithPlaceholder
             src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
-            width="480"
-            height="360"
+            width={640}
+            height={360}
             alt=""
             loading={eager ? "eager" : "lazy"}
-            unoptimized
+            fit="cover"
           />
           <span className="play">
             ▶<span className="sr-only"> Play video</span>

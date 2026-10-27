@@ -145,6 +145,59 @@ h3 {
   object-fit: cover;
   display: block;
 }
+.image-frame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: #dfe9e6;
+}
+.image-frame__picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.image-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.image-frame__shimmer {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    #dfe9e6 20%,
+    #f5faf8 38%,
+    #dfe9e6 56%
+  );
+  background-size: 220% 100%;
+  animation: image-shimmer 1.4s ease-in-out infinite;
+}
+.image-frame__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+.image-frame__fallback img {
+  width: min(60%, 314px);
+  height: auto;
+  filter: brightness(0) saturate(100%);
+  opacity: 0.22;
+  object-fit: contain;
+}
+.body-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+@keyframes image-shimmer {
+  to {
+    background-position-x: -220%;
+  }
+}
 .play {
   position: absolute;
   top: 50%;
@@ -179,13 +232,13 @@ h3 {
   width: 100%;
   height: auto;
   border-radius: 0.5rem;
+}
+.photo-grid .photo-image,
+.body-image {
+  border-radius: 0.5rem;
   box-shadow:
     0 2px 4px rgb(6 75 67 / 12%),
     0 10px 22px rgb(6 75 67 / 20%);
-}
-.body-image {
-  max-width: 100%;
-  height: auto;
 }
 footer {
   max-width: 1160px;
@@ -304,5 +357,8 @@ footer {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .image-frame__shimmer {
+    animation: none;
   }
 }

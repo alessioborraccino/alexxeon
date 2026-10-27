@@ -135,7 +135,7 @@ test("landscape header respects horizontal safe areas without changing desktop l
     (element) => element.getBoundingClientRect().left,
   );
   expect(firstPhotoLeft).toBeGreaterThanOrEqual(bioLeft + bioPadding);
-  await expect(page.locator(".photo-grid img").first()).toHaveCSS(
+  await expect(page.locator(".photo-grid .photo-image").first()).toHaveCSS(
     "box-shadow",
     /rgba\(6, 75, 67, 0\.12\).*rgba\(6, 75, 67, 0\.2\)/,
   );
@@ -153,6 +153,29 @@ test("music cards have a subtle shadow", async ({ page }) => {
     "box-shadow",
     /rgba\(6, 75, 67, 0\.1\).*rgba\(6, 75, 67, 0\.18\)/,
   );
+});
+
+test("image loading shows shimmer then branded fallback on failure", async ({
+  page,
+}) => {
+  let releaseImageRequest = () => {};
+  const imageRequestGate = new Promise<void>((resolve) => {
+    releaseImageRequest = resolve;
+  });
+  await page.route("**/hqdefault.jpg", async (route) => {
+    await imageRequestGate;
+    await route.abort();
+  });
+
+  const navigation = page.goto("/");
+  const imageFrame = page.locator(".image-frame").first();
+  await expect(imageFrame.locator(".image-frame__shimmer")).toBeVisible();
+  releaseImageRequest();
+  await navigation;
+  await expect(imageFrame).toHaveClass(/image-frame--failed/);
+  await expect(
+    imageFrame.locator(".image-frame__fallback img"),
+  ).toHaveAttribute("src", "/full-logo-white.png");
 });
 
 test("song video preview activates its privacy-enhanced YouTube player", async ({
