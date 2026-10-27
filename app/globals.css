@@ -221,10 +221,16 @@ footer {
   }
   .site-header {
     flex-wrap: wrap;
-    position: sticky;
+    position: fixed;
     top: 0;
+    right: 0;
+    left: 0;
     z-index: 20;
-    padding-top: calc(1rem + env(safe-area-inset-top, 0px));
+    height: calc(74px + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px) 1.5rem 0;
+  }
+  .site-header-spacer {
+    height: calc(74px + env(safe-area-inset-top, 0px));
   }
   .menu-toggle {
     display: block;
@@ -237,7 +243,12 @@ footer {
   .navigation {
     display: none;
     width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #00796e;
     padding-block: 0.5rem;
+    padding-inline: 1.5rem;
   }
   .navigation.open {
     display: flex;
