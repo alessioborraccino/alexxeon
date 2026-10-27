@@ -60,6 +60,15 @@ export default defineType({
     {
       type: "image",
       options: { hotspot: true },
+      fields: [
+        {
+          name: "alt",
+          title: "Alternative text",
+          type: "string",
+          description:
+            "Describe the image for people who cannot see it. Leave blank only when the image is decorative.",
+        },
+      ],
     },
     {
       type: "youtube",

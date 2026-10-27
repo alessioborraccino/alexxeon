@@ -32,6 +32,31 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await expect(menu).toHaveAttribute("aria-expanded", "false");
 });
 
+test("keyboard users can skip content and dismiss mobile navigation", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const menu = page.getByRole("button", { name: "Menu" });
+  await waitForHydration(menu);
+  await page.keyboard.press("Tab");
+  const skipLink = page.getByRole("link", { name: "Skip to content" });
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#main$/);
+
+  await menu.focus();
+  await page.keyboard.press("Enter");
+  await expect(menu).toHaveAttribute("aria-expanded", "true");
+  await page.getByRole("link", { name: "Bio" }).focus();
+  await page.keyboard.press("Escape");
+  await expect(menu).toHaveAttribute("aria-expanded", "false");
+  await expect(menu).toBeFocused();
+  await expect(menu).toHaveCSS("outline-width", "3px");
+});
+
 test("mobile header stays pinned while scrolling", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");

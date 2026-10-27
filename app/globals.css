@@ -27,7 +27,8 @@ a {
 }
 :focus-visible {
   outline: 3px solid #ffdb77;
-  outline-offset: 5px;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px #075e54;
 }
 h1,
 h2,
