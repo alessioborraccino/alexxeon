@@ -98,6 +98,25 @@ test("mobile header stays pinned while scrolling", async ({ page }) => {
     .toBe(0);
 });
 
+test("landscape header respects horizontal safe areas without changing desktop layout", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 844, height: 390 });
+  await page.goto("/");
+  const header = page.locator(".site-header");
+  await expect(header).toHaveCSS("position", "relative");
+  const landscapePadding = await header.evaluate(
+    (element) => Number.parseFloat(getComputedStyle(element).paddingLeft),
+  );
+  expect(landscapePadding).toBeGreaterThanOrEqual(24);
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  const desktopPadding = await header.evaluate(
+    (element) => Number.parseFloat(getComputedStyle(element).paddingLeft),
+  );
+  expect(desktopPadding).toBe(60);
+});
+
 test("music cards have a subtle shadow", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator(".card").first()).toHaveCSS(

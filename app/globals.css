@@ -215,6 +215,18 @@ footer {
   color: #123;
   padding: 1rem;
 }
+@media (orientation: landscape) and (max-height: 700px) {
+  .site-header {
+    padding-left: max(
+      calc((100vw - 1160px) / 2),
+      calc(env(safe-area-inset-left, 0px) + 1.5rem)
+    );
+    padding-right: max(
+      calc((100vw - 1160px) / 2),
+      calc(env(safe-area-inset-right, 0px) + 1.5rem)
+    );
+  }
+}
 @media (max-width: 650px) {
   .music-grid,
   .photo-grid {
