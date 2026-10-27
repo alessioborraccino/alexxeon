@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 html {
+  background-color: #075427;
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
 }
@@ -223,6 +224,7 @@ footer {
     position: sticky;
     top: 0;
     z-index: 20;
+    padding-top: calc(1rem + env(safe-area-inset-top, 0px));
   }
   .menu-toggle {
     display: block;
