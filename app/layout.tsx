@@ -1,7 +1,8 @@
 import "./globals.css";
 import Header from "../components/Header";
 import Socials from "../components/Socials";
-import { siteUrl, socials } from "../lib/site.mjs";
+import { siteUrl, socials } from "../lib/site";
+import type { ReactNode } from "react";
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -10,7 +11,7 @@ export const metadata = {
   },
   verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
 };
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   const artist = {
     "@context": "https://schema.org",
     "@type": "Person",

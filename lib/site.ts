@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 export const siteUrl = "https://www.alexxeon.com";
 export const socials = [
   ["YouTube", "https://www.youtube.com/channel/UCuV3i0Oz0Q-XnOuUyFlfVVA"],
@@ -6,8 +8,12 @@ export const socials = [
   ["TikTok", "https://tiktok.com/@alexx.eon"],
   ["Facebook", "https://www.facebook.com/Alexx-Eon-107623971924941"],
   ["X", "https://twitter.com/EonAlexx"],
-];
-export function pageMetadata(title, description, path = "/") {
+] as const;
+export function pageMetadata(
+  title: string,
+  description: string,
+  path = "/",
+): Metadata {
   return {
     title,
     description,

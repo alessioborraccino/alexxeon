@@ -1,4 +1,6 @@
-export default {
+import { defineType } from "sanity";
+
+export default defineType({
   name: "post",
   title: "Post",
   type: "document",
@@ -14,12 +16,20 @@ export default {
       title: "Slug",
       type: "slug",
       validation: (Rule) =>
-        Rule.required().custom(
-          (value) =>
-            !value?.current ||
-            /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value.current) ||
-            "Use lowercase letters, numbers, and hyphens.",
-        ),
+        Rule.required().custom((value) => {
+          const current =
+            typeof value === "object" &&
+            value !== null &&
+            "current" in value &&
+            typeof value.current === "string"
+              ? value.current
+              : undefined;
+          return (
+            !current ||
+            /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(current) ||
+            "Use lowercase letters, numbers, and hyphens."
+          );
+        }),
       options: {
         source: "title",
         maxLength: 96,
@@ -78,4 +88,4 @@ export default {
       });
     },
   },
-};
+});

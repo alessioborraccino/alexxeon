@@ -1,4 +1,4 @@
-import { socials } from "../lib/site.mjs";
+import { socials } from "../lib/site";
 export default function Socials() {
   return (
     <footer>

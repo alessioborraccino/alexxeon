@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { youtubeId, normalizePosts } from "../lib/content.mjs";
+import { youtubeId, normalizePosts } from "../lib/content";
+import type { PortableTextBlock } from "@portabletext/types";
 test("YouTube links support existing embeds, short links, and Shorts without accepting other hosts", () => {
   for (const url of [
     "https://www.youtube.com/watch?v=imdZTBMk-Kc",
@@ -19,9 +20,26 @@ test("YouTube links support existing embeds, short links, and Shorts without acc
     assert.equal(youtubeId(url), null);
 });
 test("Published songs keep full body and receive stable slugs and readable descriptions", () => {
-  const body = [
-    { _type: "block", children: [{ text: "First " }, { text: "paragraph." }] },
-    { _type: "block", children: [{ text: "Second paragraph." }] },
+  const body: PortableTextBlock[] = [
+    {
+      _type: "block",
+      _key: "first",
+      style: "normal",
+      markDefs: [],
+      children: [
+        { _type: "span", _key: "one", text: "First ", marks: [] },
+        { _type: "span", _key: "two", text: "paragraph.", marks: [] },
+      ],
+    },
+    {
+      _type: "block",
+      _key: "second",
+      style: "normal",
+      markDefs: [],
+      children: [
+        { _type: "span", _key: "three", text: "Second paragraph.", marks: [] },
+      ],
+    },
   ];
   const [post] = normalizePosts([
     { _id: "1", title: "Song", slug: { current: "song" }, body },

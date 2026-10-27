@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { createClient } from "@sanity/client";
-import { normalizePosts } from "../lib/content.mjs";
+import { normalizePosts, type SanityPostInput } from "../lib/content";
 const client = createClient({
   projectId: "nulp5uls",
   dataset: "production",
@@ -9,7 +9,7 @@ const client = createClient({
   perspective: "published",
 });
 const posts = normalizePosts(
-  await client.fetch(
+  await client.fetch<SanityPostInput[]>(
     `*[_type == "post"] | order(publishedAt desc, _createdAt desc) { _id, title, slug, body, mainVideo, publishedAt, _updatedAt }`,
   ),
 );

@@ -2,9 +2,10 @@ import sharp from "sharp";
 import { mkdir, readdir } from "node:fs/promises";
 import path from "node:path";
 await mkdir("public/images", { recursive: true });
+const widths = [640, 1280] as const;
 for (const file of await readdir("assets/originals")) {
   const name = path.parse(file).name;
-  for (const width of [640, 1280]) {
+  for (const width of widths) {
     const input = sharp(`assets/originals/${file}`)
       .rotate()
       .resize(width, Math.round((width * 2) / 3), { fit: "cover" });

@@ -1,6 +1,7 @@
-import { PortableText } from "@portabletext/react";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import Video from "./Video";
-import { youtubeId } from "../lib/content.mjs";
+import { youtubeId } from "../lib/content";
 const components = {
   block: { h1: ({ children }) => <h2>{children}</h2> },
   marks: {
@@ -35,7 +36,11 @@ const components = {
       );
     },
   },
-};
-export default function Body({ value }) {
+} satisfies PortableTextComponents;
+export default function Body({
+  value,
+}: {
+  value?: PortableTextBlock[] | null;
+}) {
   return <PortableText value={value || []} components={components} />;
 }

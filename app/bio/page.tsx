@@ -1,10 +1,10 @@
-import { pageMetadata } from "../../lib/site.mjs";
+import { pageMetadata } from "../../lib/site";
 export const metadata = pageMetadata(
   "About Alexx Eon",
   "Meet Alexx Eon: an Italian-born musician blending piano, vocals, and electronic influences in personal interpretations of familiar songs.",
   "/bio/",
 );
-function Photo({ name, alt }) {
+function Photo({ name, alt }: { name: string; alt: string }) {
   return (
     <picture>
       <source

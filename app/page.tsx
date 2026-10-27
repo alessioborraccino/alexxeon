@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Video from "../components/Video";
-import { getPosts } from "../lib/posts.mjs";
-import { pageMetadata } from "../lib/site.mjs";
+import { getPosts } from "../lib/posts";
+import { pageMetadata } from "../lib/site";
 export const metadata = pageMetadata(
   "Alexx Eon — Music & Electronic Covers",
   "Discover Alexx Eon’s music: electronic covers, reimagined pop songs, and intimate performances. Watch the latest videos and meet the artist.",

@@ -1,6 +1,10 @@
 import { readFile, stat } from "node:fs/promises";
 import assert from "node:assert/strict";
-const posts = JSON.parse(await readFile(".generated/posts.json", "utf8"));
+import type { Post } from "../lib/content";
+
+const posts = JSON.parse(
+  await readFile(".generated/posts.json", "utf8"),
+) as Post[];
 const routes = ["/", "/bio/", ...posts.map((p) => `/music/${p.slug}/`)];
 const sitemap = await readFile("out/sitemap.xml", "utf8");
 for (const route of routes) {

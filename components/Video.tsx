@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
-export default function Video({ id, title, eager = false }) {
+type VideoProps = { id?: string | null; title: string; eager?: boolean };
+export default function Video({ id, title, eager = false }: VideoProps) {
   const [playing, setPlaying] = useState(false);
   if (!id) return <p>Video unavailable.</p>;
   return (

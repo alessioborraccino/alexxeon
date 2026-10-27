@@ -7,16 +7,17 @@
     "dev": "sanity dev",
     "start": "sanity dev",
     "build": "sanity build",
-    "validate": "sanity schema validate"
+    "validate": "sanity schema validate",
+    "typecheck": "tsc --noEmit"
   },
   "engines": {
     "node": ">=22.12 <27"
   },
   "dependencies": {
-    "sanity": "6.20.0",
     "@sanity/vision": "6.20.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "sanity": "6.20.0",
     "styled-components": "6.6.0"
   },
   "overrides": {
@@ -30,5 +31,8 @@
     "typeid-js": {
       "uuid": "^11.1.1"
     }
+  },
+  "devDependencies": {
+    "typescript": "7.0.2"
   }
 }

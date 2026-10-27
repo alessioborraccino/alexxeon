@@ -1,5 +1,5 @@
-import { getPosts } from "../lib/posts.mjs";
-import { siteUrl } from "../lib/site.mjs";
+import { getPosts } from "../lib/posts";
+import { siteUrl } from "../lib/site";
 export const dynamic = "force-static";
 export default async function sitemap() {
   return [
