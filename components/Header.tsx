@@ -45,6 +45,8 @@ export default function Header() {
         <nav
           id="main-navigation"
           aria-label="Main navigation"
+          aria-hidden={!open}
+          inert={!open}
           className={open ? "navigation open" : "navigation"}
         >
           <Link href="/" onClick={() => setOpen(false)}>

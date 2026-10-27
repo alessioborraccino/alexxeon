@@ -22,7 +22,11 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await page.goto("/");
 
   const menu = page.getByRole("button", { name: "Menu" });
+  const navigation = page.locator("#main-navigation");
   await expect(menu).toHaveAttribute("aria-expanded", "false");
+  await expect(navigation).toHaveCSS("visibility", "hidden");
+  await expect(navigation).toHaveAttribute("aria-hidden", "true");
+  await expect(navigation).toHaveAttribute("inert", "");
   const menuSize = await menu.evaluate((element) => {
     const { width, height } = element.getBoundingClientRect();
     return { width, height };
@@ -32,6 +36,10 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await waitForHydration(menu);
   await menu.click();
   await expect(menu).toHaveAttribute("aria-expanded", "true");
+  await expect(navigation).toHaveCSS("visibility", "visible");
+  await expect(navigation).toHaveAttribute("aria-hidden", "false");
+  await expect(navigation).toHaveCSS("opacity", "1");
+  await expect(navigation).toHaveCSS("transition-duration", /0\.24s/);
   await page.getByRole("link", { name: "Bio" }).click();
   await expect(page).toHaveURL(/\/bio\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -82,7 +90,7 @@ test("mobile header stays pinned while scrolling", async ({ page }) => {
     "box-shadow",
     /rgba\(0, 72, 64, 0\.18\).*rgba\(0, 72, 64, 0\.12\)/,
   );
-  await expect(page.locator(".navigation")).toHaveCSS("display", "none");
+  await expect(page.locator(".navigation")).toHaveCSS("visibility", "hidden");
   const headerHeight = await header.evaluate(
     (element) => element.getBoundingClientRect().height,
   );
