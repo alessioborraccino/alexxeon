@@ -80,7 +80,7 @@ test("mobile header stays pinned while scrolling", async ({ page }) => {
   await expect(header).toHaveCSS("position", "fixed");
   await expect(header).toHaveCSS(
     "box-shadow",
-    "rgba(0, 29, 36, 0.2) 0px 4px 14px 0px",
+    /rgba\(0, 72, 64, 0\.18\).*rgba\(0, 72, 64, 0\.12\)/,
   );
   await expect(page.locator(".navigation")).toHaveCSS("display", "none");
   const headerHeight = await header.evaluate(
@@ -135,6 +135,10 @@ test("landscape header respects horizontal safe areas without changing desktop l
     (element) => element.getBoundingClientRect().left,
   );
   expect(firstPhotoLeft).toBeGreaterThanOrEqual(bioLeft + bioPadding);
+  await expect(page.locator(".photo-grid img").first()).toHaveCSS(
+    "box-shadow",
+    /rgba\(6, 75, 67, 0\.12\).*rgba\(6, 75, 67, 0\.2\)/,
+  );
 
   await page.setViewportSize({ width: 1280, height: 800 });
   const desktopPadding = await header.evaluate((element) =>
@@ -147,7 +151,7 @@ test("music cards have a subtle shadow", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator(".card").first()).toHaveCSS(
     "box-shadow",
-    "rgba(0, 29, 36, 0.22) 0px 4px 14px 0px",
+    /rgba\(6, 75, 67, 0\.1\).*rgba\(6, 75, 67, 0\.18\)/,
   );
 });
 

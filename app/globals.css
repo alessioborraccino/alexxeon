@@ -55,6 +55,9 @@ h3 {
   background: #00796e;
   position: relative;
   z-index: 2;
+  box-shadow:
+    0 3px 8px rgb(0 72 64 / 18%),
+    0 12px 24px rgb(0 72 64 / 12%);
 }
 .site-header img {
   display: block;
@@ -109,7 +112,10 @@ h3 {
   color: #124b43;
   padding: 1.5rem;
   border-radius: 0.65rem;
-  box-shadow: 0 4px 14px #001d2438;
+  box-shadow:
+    0 2px 4px rgb(6 75 67 / 10%),
+    0 10px 24px rgb(6 75 67 / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 85%);
 }
 .card h3 a {
   text-decoration: none;
@@ -173,6 +179,9 @@ h3 {
   width: 100%;
   height: auto;
   border-radius: 0.5rem;
+  box-shadow:
+    0 2px 4px rgb(6 75 67 / 12%),
+    0 10px 22px rgb(6 75 67 / 20%);
 }
 .body-image {
   max-width: 100%;
@@ -251,7 +260,6 @@ footer {
     right: 0;
     left: 0;
     z-index: 20;
-    box-shadow: 0 4px 14px #001d2433;
     height: calc(74px + env(safe-area-inset-top, 0px));
     padding: env(safe-area-inset-top, 0px) 1.5rem 0;
   }
