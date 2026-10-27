@@ -105,14 +105,40 @@ test("landscape header respects horizontal safe areas without changing desktop l
   await page.goto("/");
   const header = page.locator(".site-header");
   await expect(header).toHaveCSS("position", "relative");
-  const landscapePadding = await header.evaluate(
-    (element) => Number.parseFloat(getComputedStyle(element).paddingLeft),
+  const landscapePadding = await header.evaluate((element) =>
+    Number.parseFloat(getComputedStyle(element).paddingLeft),
   );
   expect(landscapePadding).toBeGreaterThanOrEqual(24);
+  const homeSection = page.locator("#music");
+  const firstCard = page.locator(".card").first();
+  const sectionPadding = await homeSection.evaluate((element) =>
+    Number.parseFloat(getComputedStyle(element).paddingLeft),
+  );
+  const cardLeft = await firstCard.evaluate(
+    (element) => element.getBoundingClientRect().left,
+  );
+  const sectionLeft = await homeSection.evaluate(
+    (element) => element.getBoundingClientRect().left,
+  );
+  expect(cardLeft).toBeGreaterThanOrEqual(sectionLeft + sectionPadding);
+
+  await page.goto("/bio/");
+  const bioSection = page.locator("main.bio");
+  const bioPadding = await bioSection.evaluate((element) =>
+    Number.parseFloat(getComputedStyle(element).paddingLeft),
+  );
+  const firstPhotoLeft = await page
+    .locator(".photo-grid img")
+    .first()
+    .evaluate((element) => element.getBoundingClientRect().left);
+  const bioLeft = await bioSection.evaluate(
+    (element) => element.getBoundingClientRect().left,
+  );
+  expect(firstPhotoLeft).toBeGreaterThanOrEqual(bioLeft + bioPadding);
 
   await page.setViewportSize({ width: 1280, height: 800 });
-  const desktopPadding = await header.evaluate(
-    (element) => Number.parseFloat(getComputedStyle(element).paddingLeft),
+  const desktopPadding = await header.evaluate((element) =>
+    Number.parseFloat(getComputedStyle(element).paddingLeft),
   );
   expect(desktopPadding).toBe(60);
 });

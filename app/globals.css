@@ -216,6 +216,18 @@ footer {
   padding: 1rem;
 }
 @media (orientation: landscape) and (max-height: 700px) {
+  .hero,
+  .section,
+  footer {
+    padding-left: max(
+      1.5rem,
+      calc(env(safe-area-inset-left, 0px) + 1.5rem)
+    );
+    padding-right: max(
+      1.5rem,
+      calc(env(safe-area-inset-right, 0px) + 1.5rem)
+    );
+  }
   .site-header {
     padding-left: max(
       calc((100vw - 1160px) / 2),
