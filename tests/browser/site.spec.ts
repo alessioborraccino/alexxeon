@@ -32,6 +32,20 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await expect(menu).toHaveAttribute("aria-expanded", "false");
 });
 
+test("mobile header stays pinned while scrolling", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const header = page.locator(".site-header");
+  await expect(header).toHaveCSS("position", "sticky");
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect
+    .poll(() =>
+      header.evaluate((element) => element.getBoundingClientRect().top),
+    )
+    .toBe(0);
+});
+
 test("song video preview activates its privacy-enhanced YouTube player", async ({
   page,
 }) => {
