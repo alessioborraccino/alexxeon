@@ -19,6 +19,21 @@ function routeFile(pathname: string): string {
 for (const route of routes) {
   const html = await readFile(`out${route}index.html`, "utf8");
   const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
+  const stylesheets = [
+    ...markup.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g),
+  ];
+  assert.ok(stylesheets.length > 0, `${route} has no linked stylesheet`);
+  for (const [stylesheetTag] of stylesheets) {
+    const href = stylesheetTag.match(/\bhref="([^"]+\.css(?:\?[^"#]*)?)"/)?.[1];
+    assert.ok(href, `${route} has a stylesheet link without a CSS URL`);
+    const stylesheetPath = new URL(href, `https://www.alexxeon.com${route}`)
+      .pathname;
+    try {
+      await stat(`out${decodeURIComponent(stylesheetPath)}`);
+    } catch {
+      assert.fail(`${route} links to missing stylesheet: ${href}`);
+    }
+  }
   assert.equal(
     (markup.match(/<h1[ >]/g) || []).length,
     1,
