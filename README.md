@@ -12,6 +12,12 @@ A statically generated Next.js music website backed by the existing Sanity produ
 - **Biome and Prettier** — lint and format checks.
 - **Playwright** — Chromium browser smoke tests.
 
+## Localization
+
+Site interface translations live in `messages/en.json`, `messages/it.json`, and `messages/de.json`. `lib/i18n.ts` defines supported locale codes and names. Localized pages use prefixed routes such as `/en/`, `/it/bio/`, and `/de/music/the-loneliest/`; `/` redirects to `/en/`. The home, biography, and song pages publish canonical URLs and language alternates.
+
+Music translations are separate Sanity post documents. Set each document’s language to `en`, `it`, or `de`; keep its slug identical across languages so language switching stays on the same song. The Sanity Studio includes `@sanity/document-internationalization` for managing translation groups. The build reads published posts by language and stops if a locale is missing or its slugs do not match English. Translate content in Sanity; the build never machine-translates posts.
+
 ## Run the website locally
 
 ```sh

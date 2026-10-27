@@ -2,9 +2,10 @@ import { readFile } from "node:fs/promises";
 import { expect, test, type Locator } from "@playwright/test";
 import type { Post } from "../../lib/content";
 
-const posts = JSON.parse(
+const postsByLocale = JSON.parse(
   await readFile(".generated/posts.json", "utf8"),
-) as Post[];
+) as Record<"en" | "it" | "de", Post[]>;
+const posts = postsByLocale.en;
 const videoPost = posts.find((post) => post.videoId);
 
 async function waitForHydration(control: Locator) {
@@ -17,9 +18,52 @@ async function waitForHydration(control: Locator) {
     .toBe(true);
 }
 
+test("root route uses device preferred language", async ({ browser }) => {
+  const context = await browser.newContext({ locale: "de-DE" });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/de\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "de");
+  await context.close();
+});
+
+test("root route falls back to English for unsupported device languages", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ locale: "fr-FR" });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/en\/$/);
+  await context.close();
+});
+
+test("saved language takes priority over device language", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ locale: "de-DE" });
+  await context.addInitScript(() =>
+    localStorage.setItem("alexxeon-language", "it"),
+  );
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/it\/$/);
+  await context.close();
+});
+
+test("preferences save language and use it for the root route", async ({
+  page,
+}) => {
+  await page.goto("/en/preferences/");
+  await page.getByRole("combobox", { name: "Language" }).selectOption("it");
+  await expect(page).toHaveURL(/\/it\/preferences\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "it");
+  await page.goto("/");
+  await expect(page).toHaveURL(/\/it\/$/);
+});
+
 test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/en/");
 
   const menu = page.getByRole("button", { name: "Menu" });
   const navigation = page.locator("#main-navigation");
@@ -40,11 +84,9 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await expect(navigation).toHaveAttribute("aria-hidden", "false");
   await expect(navigation).toHaveCSS("opacity", "1");
   await expect(navigation).toHaveCSS("transition-duration", /0\.24s/);
-  await expect(
-    page.getByRole("combobox", { name: "Color theme" }),
-  ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Preferences" })).toBeVisible();
   await page.getByRole("link", { name: "Bio" }).click();
-  await expect(page).toHaveURL(/\/bio\/$/);
+  await expect(page).toHaveURL(/\/en\/bio\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expect(menu).toHaveAttribute("aria-expanded", "false");
 });
@@ -58,7 +100,7 @@ test("mobile touch taps activate portrait navigation links", async ({
     hasTouch: true,
   });
   const page = await context.newPage();
-  await page.goto("/");
+  await page.goto("/en/");
 
   const menu = page.getByRole("button", { name: "Menu" });
   await waitForHydration(menu);
@@ -70,7 +112,7 @@ test("mobile touch taps activate portrait navigation links", async ({
   const positionDuringAnimation = await bioLink.boundingBox();
   expect(positionDuringAnimation?.y).toBe(initialPosition?.y);
   await bioLink.tap();
-  await expect(page).toHaveURL(/\/bio\/$/);
+  await expect(page).toHaveURL(/\/en\/bio\/$/);
   await context.close();
 });
 
@@ -83,14 +125,14 @@ test("landscape touch taps activate visible navigation links", async ({
     hasTouch: true,
   });
   const page = await context.newPage();
-  await page.goto("/");
+  await page.goto("/en/");
 
   const navigation = page.locator("#main-navigation");
   const bioLink = page.getByRole("link", { name: "Bio" });
   await expect(navigation).not.toHaveAttribute("inert", "");
   await expect(navigation).not.toHaveAttribute("aria-hidden", "true");
   await bioLink.tap();
-  await expect(page).toHaveURL(/\/bio\/$/);
+  await expect(page).toHaveURL(/\/en\/bio\/$/);
   await context.close();
 });
 
@@ -98,7 +140,7 @@ test("keyboard users can skip content and dismiss mobile navigation", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/en/");
 
   const menu = page.getByRole("button", { name: "Menu" });
   await waitForHydration(menu);
@@ -121,7 +163,7 @@ test("keyboard users can skip content and dismiss mobile navigation", async ({
 
 test("mobile header stays pinned while scrolling", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/");
+  await page.goto("/en/");
 
   await expect(page.locator('meta[name="viewport"]')).toHaveAttribute(
     "content",
@@ -158,7 +200,7 @@ test("landscape header respects horizontal safe areas without changing desktop l
   page,
 }) => {
   await page.setViewportSize({ width: 844, height: 390 });
-  await page.goto("/");
+  await page.goto("/en/");
   const header = page.locator(".site-header");
   await expect(header).toHaveCSS("position", "relative");
   const landscapePadding = await header.evaluate((element) =>
@@ -178,7 +220,7 @@ test("landscape header respects horizontal safe areas without changing desktop l
   );
   expect(cardLeft).toBeGreaterThanOrEqual(sectionLeft + sectionPadding);
 
-  await page.goto("/bio/");
+  await page.goto("/en/bio/");
   const bioSection = page.locator("main.bio");
   const bioPadding = await bioSection.evaluate((element) =>
     Number.parseFloat(getComputedStyle(element).paddingLeft),
@@ -204,7 +246,7 @@ test("landscape header respects horizontal safe areas without changing desktop l
 });
 
 test("music cards have a subtle shadow", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("/en/");
   await expect(page.locator(".card").first()).toHaveCSS(
     "background-color",
     "rgb(250, 249, 246)",
@@ -219,10 +261,10 @@ test("theme selector supports system preference and saved overrides", async ({
   page,
 }) => {
   await page.emulateMedia({ colorScheme: "light" });
-  await page.goto("/");
+  await page.goto("/en/preferences/");
 
-  const theme = page.getByRole("combobox", { name: "Color theme" });
-  const card = page.locator(".card").first();
+  const theme = page.getByRole("combobox", { name: "Theme" });
+  const card = page.locator(".preferences__controls");
   await expect(theme).toHaveValue("system");
   await expect(page.locator("body")).toHaveCSS(
     "background-color",
@@ -263,7 +305,7 @@ test("image loading shows shimmer then branded fallback on failure", async ({
     await route.abort();
   });
 
-  const navigation = page.goto("/");
+  const navigation = page.goto("/en/");
   const imageFrame = page.locator(".image-frame").first();
   await expect(imageFrame.locator(".image-frame__shimmer")).toBeVisible();
   releaseImageRequest();
@@ -283,7 +325,7 @@ test("song video preview activates its privacy-enhanced YouTube player", async (
   ).toBeTruthy();
   if (!videoPost) return;
 
-  await page.goto(`/music/${videoPost.slug}/`);
+  await page.goto(`/en/music/${videoPost.slug}/`);
   const playButton = page.getByRole("button", {
     name: `Play ${videoPost.title}`,
   });

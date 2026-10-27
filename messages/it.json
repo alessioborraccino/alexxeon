@@ -1,0 +1,42 @@
+{
+  "skipToContent": "Vai al contenuto",
+  "menu": "Menu",
+  "home": "Home",
+  "music": "Musica",
+  "bio": "Biografia",
+  "preferences": "Preferenze",
+  "preferencesDescription": "Scegli la lingua e l’aspetto del sito.",
+  "language": "Lingua",
+  "theme": "Tema",
+  "themeOptions": {
+    "system": "Sistema",
+    "light": "Chiaro",
+    "dark": "Scuro"
+  },
+  "eyebrow": "La musica, reinventata.",
+  "heroLead": "Suoni elettronici. Canzoni familiari. Un tocco personale.",
+  "heroDetail": "Scopri reinterpretazioni nate dall’amore per il pianoforte, il canto e la musica elettronica.",
+  "listenTo": "Ascolta",
+  "musicHeading": "Musica e cover",
+  "aboutCover": "Scopri questa cover",
+  "aboutArtist": "Chi è Alexx Eon",
+  "follow": "Segui Alexx Eon",
+  "allMusic": "← Tutta la musica",
+  "version": "La versione di Alexx Eon",
+  "watchYouTube": "Guarda su YouTube",
+  "opensNewTab": " (si apre in una nuova scheda)",
+  "bioParagraphs": [
+    "Per Alexx la musica c’è sempre stata. Nato e cresciuto nel cuore dell’Italia, si è appassionato alla musica fin da bambino. A 9 anni chiese di poter prendere lezioni per imparare a suonare il suo strumento preferito: il pianoforte.",
+    "Mentre imparava a suonare e iniziava a scrivere canzoni, Alexx scoprì la magia della musica elettronica, che divenne la principale influenza del suo stile. Negli anni ascoltò dance, trance, techno, hip hop, R&B e musica elettronica. Questi generi lo portarono a immaginare come sarebbero suonate le canzoni che conosceva con un tocco personale, e lo ispirarono a creare cover.",
+    "Nel suo percorso con le cover, Alexx ha iniziato anche a cantare per dare ai suoi brani un’emozione più personale."
+  ],
+  "titles": {
+    "home": "Alexx Eon — Musica e cover elettroniche",
+    "bio": "Chi è Alexx Eon",
+    "music": "Musica e cover di Alexx Eon"
+  },
+  "descriptions": {
+    "home": "Scopri la musica di Alexx Eon: cover elettroniche, brani pop reinterpretati e performance intime. Guarda gli ultimi video e conosci l’artista.",
+    "bio": "Scopri Alexx Eon: musicista nato in Italia che unisce pianoforte, voce e influenze elettroniche in reinterpretazioni personali di canzoni famose."
+  }
+}

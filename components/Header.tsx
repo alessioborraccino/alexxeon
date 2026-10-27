@@ -2,11 +2,13 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import ThemeControl from "./ThemeControl";
-export default function Header() {
+import { messages, type Locale } from "../lib/i18n";
+export default function Header({ locale }: { locale: Locale }) {
+  const t = messages[locale];
   const [open, setOpen] = useState(false);
   const [isPortraitMobile, setIsPortraitMobile] = useState(false);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     const media = window.matchMedia(
       "(max-width: 650px) and (orientation: portrait)",
@@ -31,7 +33,7 @@ export default function Header() {
     <>
       <header className="site-header">
         <Link
-          href="/"
+          href={`/${locale}/`}
           aria-label="Alexx Eon home"
           onClick={() => setOpen(false)}
         >
@@ -51,7 +53,7 @@ export default function Header() {
           aria-controls="main-navigation"
           onClick={() => setOpen(!open)}
         >
-          Menu
+          {t.menu}
         </button>
         <nav
           id="main-navigation"
@@ -60,16 +62,18 @@ export default function Header() {
           inert={isPortraitMobile && !open}
           className={open ? "navigation open" : "navigation"}
         >
-          <Link href="/" onClick={() => setOpen(false)}>
-            Home
+          <Link href={`/${locale}/`} onClick={() => setOpen(false)}>
+            {t.home}
           </Link>
-          <Link href="/#music" onClick={() => setOpen(false)}>
-            Music
+          <Link href={`/${locale}/#music`} onClick={() => setOpen(false)}>
+            {t.music}
           </Link>
-          <Link href="/bio/" onClick={() => setOpen(false)}>
-            Bio
+          <Link href={`/${locale}/bio/`} onClick={() => setOpen(false)}>
+            {t.bio}
           </Link>
-          <ThemeControl />
+          <Link href={`/${locale}/preferences/`} onClick={() => setOpen(false)}>
+            {t.preferences}
+          </Link>
         </nav>
       </header>
       <div className="site-header-spacer" aria-hidden="true" />

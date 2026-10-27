@@ -1,0 +1,42 @@
+{
+  "skipToContent": "Skip to content",
+  "menu": "Menu",
+  "home": "Home",
+  "music": "Music",
+  "bio": "Bio",
+  "preferences": "Preferences",
+  "preferencesDescription": "Choose your language and appearance preferences.",
+  "language": "Language",
+  "theme": "Theme",
+  "themeOptions": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "eyebrow": "Music, reimagined.",
+  "heroLead": "Electronic sounds. Familiar songs. A personal twist.",
+  "heroDetail": "Discover covers shaped by a love of piano, singing, and electronic music.",
+  "listenTo": "Listen to",
+  "musicHeading": "Music & covers",
+  "aboutCover": "About this cover",
+  "aboutArtist": "About Alexx Eon",
+  "follow": "Follow Alexx Eon",
+  "allMusic": "← All music",
+  "version": "Alexx Eon’s version",
+  "watchYouTube": "Watch on YouTube",
+  "opensNewTab": " (opens in a new tab)",
+  "bioParagraphs": [
+    "For Alexx, music has always been there. Born and raised in the heart of Italy, Alexx loved music since childhood. When he was 9 years old, he asked for lessons to learn how to play his favourite instrument: the piano.",
+    "While learning to play and starting to write songs, Alexx discovered the magic of electronic music, which became the main influence on his style. He listened to dance, trance, techno, hip hop, R&B, and electronic music through the years. These styles made him wonder how familiar songs would sound with his own personal twist, and inspired him to write covers.",
+    "As he wrote cover songs, Alexx also started singing to bring a more personal feeling to his music."
+  ],
+  "titles": {
+    "home": "Alexx Eon — Music & Electronic Covers",
+    "bio": "About Alexx Eon",
+    "music": "Music & covers by Alexx Eon"
+  },
+  "descriptions": {
+    "home": "Discover Alexx Eon’s music: electronic covers, reimagined pop songs, and intimate performances. Watch the latest videos and meet the artist.",
+    "bio": "Meet Alexx Eon: an Italian-born musician blending piano, vocals, and electronic influences in personal interpretations of familiar songs."
+  }
+}

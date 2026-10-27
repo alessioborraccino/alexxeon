@@ -1,22 +1,48 @@
-import "./globals.css";
-import Header from "../components/Header";
-import Socials from "../components/Socials";
-import { siteUrl, socials } from "../lib/site";
+import "../globals.css";
+import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-export const metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: "Alexx Eon — Music & Electronic Covers",
-    template: "%s | Alexx Eon",
-  },
-  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
+import Header from "../../components/Header";
+import Socials from "../../components/Socials";
+import { hasLocale, locales, messages } from "../../lib/i18n";
+import { siteUrl, socials } from "../../lib/site";
+
+export const dynamicParams = false;
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+type LocaleLayoutProps = {
+  children: ReactNode;
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: LocaleLayoutProps) {
+  const { locale: value } = await params;
+  if (!hasLocale(value)) notFound();
+  const t = messages[value];
+  return {
+    metadataBase: new URL(siteUrl),
+    title: { default: t.titles.home, template: "%s | Alexx Eon" },
+    verification: {
+      google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    },
+  };
+}
+
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
 };
-export default function RootLayout({ children }: { children: ReactNode }) {
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: LocaleLayoutProps) {
+  const { locale: value } = await params;
+  if (!hasLocale(value)) notFound();
+  const t = messages[value];
   const artist = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -26,8 +52,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     jobTitle: "Musician",
     sameAs: socials.map(([, url]) => url),
   };
+
   return (
-    <html lang="en">
+    <html lang={value}>
       <head>
         <script
           // Set saved theme before first paint to avoid a theme flash.
@@ -39,11 +66,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <a className="skip-link" href="#main">
-          Skip to content
+          {t.skipToContent}
         </a>
-        <Header />
+        <Header locale={value} />
         {children}
-        <Socials />
+        <Socials locale={value} />
         <script
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be script text; serialize data and escape less-than signs to block script-tag injection.

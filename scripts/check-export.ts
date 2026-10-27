@@ -1,11 +1,16 @@
 import { readFile, stat } from "node:fs/promises";
 import assert from "node:assert/strict";
 import type { Post } from "../lib/content";
+import { locales, type Locale } from "../lib/i18n";
 
-const posts = JSON.parse(
+const postsByLocale = JSON.parse(
   await readFile(".generated/posts.json", "utf8"),
-) as Post[];
-const routes = ["/", "/bio/", ...posts.map((p) => `/music/${p.slug}/`)];
+) as Record<Locale, Post[]>;
+const routes = locales.flatMap((locale) => [
+  `/${locale}/`,
+  `/${locale}/bio/`,
+  ...postsByLocale[locale].map((post) => `/${locale}/music/${post.slug}/`),
+]);
 const sitemap = await readFile("out/sitemap.xml", "utf8");
 const pageTitles = new Set<string>();
 const pageDescriptions = new Set<string>();
@@ -17,6 +22,7 @@ function routeFile(pathname: string): string {
 }
 
 for (const route of routes) {
+  const locale = route.split("/")[1];
   const html = await readFile(`out${route}index.html`, "utf8");
   const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
   const stylesheets = [
@@ -56,6 +62,19 @@ for (const route of routes) {
     `${route} missing from sitemap`,
   );
   assert.ok(markup.includes('id="main"'), `${route} missing landmark`);
+  assert.ok(
+    markup.includes(`<html lang="${locale}"`),
+    `${route} has incorrect document language`,
+  );
+  if (/^\/(en|it|de)\/(?:bio\/)?$/.test(route)) {
+    for (const alternateLocale of ["en", "it", "de"]) {
+      assert.ok(
+        markup.includes(`hrefLang="${alternateLocale}"`),
+        `${route} missing ${alternateLocale} alternate link`,
+      );
+    }
+    assert.ok(markup.includes('hrefLang="x-default"'));
+  }
   const title = markup.match(/<title>(.*?)<\/title>/)?.[1];
   assert.ok(title, `${route} title missing`);
   assert.ok(!pageTitles.has(title), `${route} title is not unique`);
@@ -113,20 +132,25 @@ for (const route of routes) {
     }
   }
 }
-for (const post of posts) {
-  const html = await readFile(`out/music/${post.slug}/index.html`, "utf8");
-  const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
-  assert.ok(
-    markup.includes(
-      post.title
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#x27;"),
-    ),
-    `${post.slug} title absent from initial HTML`,
-  );
+for (const locale of locales) {
+  for (const post of postsByLocale[locale]) {
+    const html = await readFile(
+      `out/${locale}/music/${post.slug}/index.html`,
+      "utf8",
+    );
+    const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g, "");
+    assert.ok(
+      markup.includes(
+        post.title
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#x27;"),
+      ),
+      `${post.slug} title absent from initial HTML`,
+    );
+  }
 }
 assert.ok(
   (await readFile("out/robots.txt", "utf8")).includes(

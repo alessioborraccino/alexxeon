@@ -1,0 +1,42 @@
+{
+  "skipToContent": "Zum Inhalt springen",
+  "menu": "Menü",
+  "home": "Startseite",
+  "music": "Musik",
+  "bio": "Biografie",
+  "preferences": "Einstellungen",
+  "preferencesDescription": "Wähle Sprache und Darstellung der Website.",
+  "language": "Sprache",
+  "theme": "Darstellung",
+  "themeOptions": {
+    "system": "System",
+    "light": "Hell",
+    "dark": "Dunkel"
+  },
+  "eyebrow": "Musik, neu gedacht.",
+  "heroLead": "Elektronische Klänge. Bekannte Songs. Eine persönliche Note.",
+  "heroDetail": "Entdecke Coverversionen, geprägt von der Liebe zu Klavier, Gesang und elektronischer Musik.",
+  "listenTo": "Anhören: ",
+  "musicHeading": "Musik und Cover",
+  "aboutCover": "Über dieses Cover",
+  "aboutArtist": "Über Alexx Eon",
+  "follow": "Alexx Eon folgen",
+  "allMusic": "← Alle Musik",
+  "version": "Alexx Eons Version",
+  "watchYouTube": "Auf YouTube ansehen",
+  "opensNewTab": " (wird in neuem Tab geöffnet)",
+  "bioParagraphs": [
+    "Musik war für Alexx schon immer da. Er wurde im Herzen Italiens geboren und wuchs dort auf. Schon als Kind liebte er Musik. Mit 9 Jahren bat er um Klavierunterricht, um sein Lieblingsinstrument spielen zu lernen.",
+    "Während er spielen lernte und erste Songs schrieb, entdeckte Alexx die Magie elektronischer Musik, die seinen Stil maßgeblich prägte. Über die Jahre hörte er Dance, Trance, Techno, Hip-Hop, R&B und elektronische Musik. Dabei fragte er sich, wie bekannte Songs mit seiner persönlichen Note klingen würden. So entstand sein Interesse an Coverversionen.",
+    "Auf seinem Weg mit Coverversionen begann Alexx auch zu singen, um seinen Stücken eine persönlichere Stimmung zu geben."
+  ],
+  "titles": {
+    "home": "Alexx Eon — Musik und elektronische Cover",
+    "bio": "Über Alexx Eon",
+    "music": "Musik und Cover von Alexx Eon"
+  },
+  "descriptions": {
+    "home": "Entdecke Alexx Eons Musik: elektronische Cover, neu interpretierte Popsongs und intime Auftritte. Sieh die neuesten Videos und lerne den Künstler kennen.",
+    "bio": "Lerne Alexx Eon kennen: einen in Italien geborenen Musiker, der Klavier, Gesang und elektronische Einflüsse in persönliche Interpretationen bekannter Songs verbindet."
+  }
+}

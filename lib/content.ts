@@ -2,6 +2,7 @@ import type { PortableTextBlock } from "@portabletext/types";
 
 export interface SanityPostInput {
   _id: string;
+  language?: string | null;
   title?: string | null;
   slug?: { current?: string | null } | null;
   body?: PortableTextBlock[] | null;

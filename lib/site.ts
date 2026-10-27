@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { locales } from "./i18n";
 
 export const siteUrl = "https://www.alexxeon.com";
 export const socials = [
@@ -13,11 +14,28 @@ export function pageMetadata(
   title: string,
   description: string,
   path = "/",
+  translated = false,
 ): Metadata {
+  const unprefixedPath = path.replace(/^\/(?:en|it|de)(?=\/|$)/, "") || "/";
+  const languages = translated
+    ? Object.fromEntries([
+        ...locales.map((locale) => [
+          locale,
+          `${siteUrl}/${locale}${unprefixedPath === "/" ? "/" : unprefixedPath}`,
+        ]),
+        [
+          "x-default",
+          `${siteUrl}/en${unprefixedPath === "/" ? "/" : unprefixedPath}`,
+        ],
+      ])
+    : undefined;
   return {
     title,
     description,
-    alternates: { canonical: siteUrl + path },
+    alternates: {
+      canonical: siteUrl + path,
+      ...(languages ? { languages } : {}),
+    },
     openGraph: {
       title,
       description,

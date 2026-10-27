@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { messages, type Locale } from "../lib/i18n";
 
 type Theme = "system" | "light" | "dark";
 const storageKey = "alexxeon-theme";
@@ -9,7 +10,8 @@ function isTheme(value: string | null): value is Theme {
   return value === "system" || value === "light" || value === "dark";
 }
 
-export default function ThemeControl() {
+export default function ThemeControl({ locale }: { locale: Locale }) {
+  const t = messages[locale];
   const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
@@ -34,15 +36,15 @@ export default function ThemeControl() {
 
   return (
     <label className="theme-control">
-      <span>Theme</span>
+      <span>{t.theme}</span>
       <select
-        aria-label="Color theme"
+        aria-label={t.theme}
         value={theme}
         onChange={(event) => changeTheme(event.currentTarget.value)}
       >
-        <option value="system">System</option>
-        <option value="light">Light</option>
-        <option value="dark">Dark</option>
+        <option value="system">{t.themeOptions.system}</option>
+        <option value="light">{t.themeOptions.light}</option>
+        <option value="dark">{t.themeOptions.dark}</option>
       </select>
     </label>
   );

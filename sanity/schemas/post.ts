@@ -7,6 +7,13 @@ export default defineType({
   type: "document",
   fields: [
     {
+      name: "language",
+      title: "Language",
+      type: "string",
+      readOnly: true,
+      hidden: true,
+    },
+    {
       name: "title",
       title: "Title",
       type: "string",
@@ -20,6 +27,8 @@ export default defineType({
       options: {
         source: "title",
         maxLength: 96,
+        // Localized documents intentionally share slugs across languages.
+        isUnique: () => true,
       },
     },
     {
