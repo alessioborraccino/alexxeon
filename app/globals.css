@@ -2,14 +2,13 @@
   box-sizing: border-box;
 }
 html {
-  background-color: #075427;
+  background-color: #075e54;
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
 }
 body {
   margin: 0;
-  background-color: #075427;
-  background-image: linear-gradient(155deg, #073b39, #075427);
+  background-color: #075e54;
   color: #f5fffc;
   font-family: system-ui, sans-serif;
   line-height: 1.65;
