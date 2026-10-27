@@ -98,6 +98,14 @@ test("mobile header stays pinned while scrolling", async ({ page }) => {
     .toBe(0);
 });
 
+test("music cards have a subtle shadow", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.locator(".card").first()).toHaveCSS(
+    "box-shadow",
+    "rgba(0, 29, 36, 0.22) 0px 4px 14px 0px",
+  );
+});
+
 test("song video preview activates its privacy-enhanced YouTube player", async ({
   page,
 }) => {
