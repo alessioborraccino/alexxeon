@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import ThemeControl from "./ThemeControl";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [isPortraitMobile, setIsPortraitMobile] = useState(false);
@@ -68,6 +69,7 @@ export default function Header() {
           <Link href="/bio/" onClick={() => setOpen(false)}>
             Bio
           </Link>
+          <ThemeControl />
         </nav>
       </header>
       <div className="site-header-spacer" aria-hidden="true" />
