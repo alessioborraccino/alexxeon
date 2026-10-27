@@ -46,6 +46,31 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await expect(menu).toHaveAttribute("aria-expanded", "false");
 });
 
+test("mobile touch taps activate portrait navigation links", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+
+  const menu = page.getByRole("button", { name: "Menu" });
+  await waitForHydration(menu);
+  await menu.tap();
+  await expect(menu).toHaveAttribute("aria-expanded", "true");
+  const bioLink = page.getByRole("link", { name: "Bio" });
+  const initialPosition = await bioLink.boundingBox();
+  await page.waitForTimeout(80);
+  const positionDuringAnimation = await bioLink.boundingBox();
+  expect(positionDuringAnimation?.y).toBe(initialPosition?.y);
+  await bioLink.tap();
+  await expect(page).toHaveURL(/\/bio\/$/);
+  await context.close();
+});
+
 test("keyboard users can skip content and dismiss mobile navigation", async ({
   page,
 }) => {
