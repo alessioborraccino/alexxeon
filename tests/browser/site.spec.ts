@@ -277,10 +277,21 @@ test("theme selector supports system preference and saved overrides", async ({
     "rgb(9, 45, 41)",
   );
   await expect(card).toHaveCSS("background-color", "rgb(23, 62, 56)");
+  await page.getByRole("combobox", { name: "Language" }).selectOption("it");
+  await expect(page).toHaveURL(/\/it\/preferences\/$/);
+  await expect(page.getByRole("combobox", { name: "Tema" })).toHaveValue(
+    "dark",
+  );
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(9, 45, 41)",
+  );
   await page.reload();
-  await expect(theme).toHaveValue("dark");
+  await expect(page.getByRole("combobox", { name: "Tema" })).toHaveValue(
+    "dark",
+  );
 
-  await theme.selectOption("system");
+  await page.getByRole("combobox", { name: "Tema" }).selectOption("system");
   await page.emulateMedia({ colorScheme: "dark" });
   await expect(page.locator("body")).toHaveCSS(
     "background-color",

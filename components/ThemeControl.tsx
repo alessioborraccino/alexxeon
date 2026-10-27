@@ -15,12 +15,16 @@ export default function ThemeControl({ locale }: { locale: Locale }) {
   const [theme, setTheme] = useState<Theme>("system");
 
   useEffect(() => {
+    let initialTheme: Theme = "system";
     try {
       const savedTheme = window.localStorage.getItem(storageKey);
-      if (isTheme(savedTheme)) setTheme(savedTheme);
+      if (isTheme(savedTheme)) initialTheme = savedTheme;
     } catch {
-      // Keep system theme when browser storage is unavailable.
+      // Use the device theme when browser storage is unavailable.
     }
+
+    setTheme(initialTheme);
+    document.documentElement.dataset.theme = initialTheme;
   }, []);
 
   function changeTheme(value: string) {
