@@ -1,4 +1,5 @@
 import { defineType } from "sanity";
+import { validatePostSlug, validatePostTitle } from "./post-validation";
 
 export default defineType({
   name: "post",
@@ -9,27 +10,13 @@ export default defineType({
       name: "title",
       title: "Title",
       type: "string",
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) => Rule.required().custom(validatePostTitle),
     },
     {
       name: "slug",
       title: "Slug",
       type: "slug",
-      validation: (Rule) =>
-        Rule.required().custom((value) => {
-          const current =
-            typeof value === "object" &&
-            value !== null &&
-            "current" in value &&
-            typeof value.current === "string"
-              ? value.current
-              : undefined;
-          return (
-            !current ||
-            /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(current) ||
-            "Use lowercase letters, numbers, and hyphens."
-          );
-        }),
+      validation: (Rule) => Rule.required().custom(validatePostSlug),
       options: {
         source: "title",
         maxLength: 96,

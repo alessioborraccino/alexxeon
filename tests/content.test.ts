@@ -54,6 +54,42 @@ test("Bad or duplicate URLs stop a build instead of silently dropping content", 
     assert.throws(() =>
       normalizePosts([{ _id: "1", title: "Song", slug: { current: slug } }]),
     );
+  assert.throws(() =>
+    normalizePosts([{ _id: "1", title: "   ", slug: { current: "song" } }]),
+  );
   const post = { _id: "1", title: "Song", slug: { current: "song" } };
   assert.throws(() => normalizePosts([post, { ...post, _id: "2" }]));
+});
+
+test("Invalid YouTube links and malformed Portable Text stop a build clearly", () => {
+  const validPost = { _id: "1", title: "Song", slug: { current: "song" } };
+  assert.throws(
+    () =>
+      normalizePosts([
+        { ...validPost, mainVideo: { url: "https://example.com/video" } },
+      ]),
+    /Post 1 has an invalid YouTube URL/,
+  );
+  assert.throws(
+    () =>
+      normalizePosts([{ ...validPost, body: [{ _type: undefined } as never] }]),
+    /body contains a block without a valid _type/,
+  );
+  assert.throws(
+    () =>
+      normalizePosts([
+        {
+          ...validPost,
+          body: [{ _type: "block", children: undefined } as never],
+        },
+      ]),
+    /contains malformed Portable Text/,
+  );
+  assert.throws(
+    () =>
+      normalizePosts([
+        { ...validPost, body: [{ _type: "youtube", url: "invalid" } as never] },
+      ]),
+    /body contains an invalid YouTube video URL/,
+  );
 });

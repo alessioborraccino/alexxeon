@@ -12,10 +12,59 @@ jobs:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
-      - run: npm run typecheck
-      - run: npm test
-      - run: npm run build
-      - run: npm run check:export
+      - id: audit
+        run: npm audit --audit-level=high
+      - id: lint
+        run: npm run lint
+      - id: format
+        run: npm run format:check
+      - id: typecheck
+        run: npm run typecheck
+      - id: unit
+        run: npm test
+      - id: build
+        run: npm run build
+      - id: export
+        run: npm run check:export
+      - id: browser_setup
+        run: npx playwright install --with-deps chromium
+      - id: browser
+        run: npm run test:browser
+      - name: Summarize site checks
+        if: always()
+        env:
+          AUDIT_RESULT: ${{ steps.audit.outcome }}
+          LINT_RESULT: ${{ steps.lint.outcome }}
+          FORMAT_RESULT: ${{ steps.format.outcome }}
+          TYPECHECK_RESULT: ${{ steps.typecheck.outcome }}
+          UNIT_RESULT: ${{ steps.unit.outcome }}
+          BUILD_RESULT: ${{ steps.build.outcome }}
+          EXPORT_RESULT: ${{ steps.export.outcome }}
+          BROWSER_SETUP_RESULT: ${{ steps.browser_setup.outcome }}
+          BROWSER_RESULT: ${{ steps.browser.outcome }}
+        run: |
+          result() {
+            case "$1" in
+              success) printf '✅ Passed' ;;
+              failure) printf '❌ Failed' ;;
+              cancelled) printf '⚪ Cancelled' ;;
+              *) printf '⏭️ Not run' ;;
+            esac
+          }
+          {
+            echo '## Site checks'
+            echo '| Check | Result |'
+            echo '| --- | --- |'
+            echo "| Dependency audit | $(result "$AUDIT_RESULT") |"
+            echo "| Lint | $(result "$LINT_RESULT") |"
+            echo "| Formatting | $(result "$FORMAT_RESULT") |"
+            echo "| TypeScript | $(result "$TYPECHECK_RESULT") |"
+            echo "| Unit tests | $(result "$UNIT_RESULT") |"
+            echo "| Production build | $(result "$BUILD_RESULT") |"
+            echo "| Export checks | $(result "$EXPORT_RESULT") |"
+            echo "| Chromium setup | $(result "$BROWSER_SETUP_RESULT") |"
+            echo "| Browser tests | $(result "$BROWSER_RESULT") |"
+          } >> "$GITHUB_STEP_SUMMARY"
   studio:
     runs-on: ubuntu-latest
     defaults:
@@ -29,6 +78,36 @@ jobs:
           cache: npm
           cache-dependency-path: sanity/package-lock.json
       - run: npm ci
-      - run: npm run validate
-      - run: npm run typecheck
-      - run: npm run build
+      - id: audit
+        run: npm audit --audit-level=high
+      - id: schema
+        run: npm run validate
+      - id: typecheck
+        run: npm run typecheck
+      - id: build
+        run: npm run build
+      - name: Summarize Studio checks
+        if: always()
+        env:
+          AUDIT_RESULT: ${{ steps.audit.outcome }}
+          SCHEMA_RESULT: ${{ steps.schema.outcome }}
+          TYPECHECK_RESULT: ${{ steps.typecheck.outcome }}
+          BUILD_RESULT: ${{ steps.build.outcome }}
+        run: |
+          result() {
+            case "$1" in
+              success) printf '✅ Passed' ;;
+              failure) printf '❌ Failed' ;;
+              cancelled) printf '⚪ Cancelled' ;;
+              *) printf '⏭️ Not run' ;;
+            esac
+          }
+          {
+            echo '## Sanity Studio checks'
+            echo '| Check | Result |'
+            echo '| --- | --- |'
+            echo "| Dependency audit | $(result "$AUDIT_RESULT") |"
+            echo "| Schema validation | $(result "$SCHEMA_RESULT") |"
+            echo "| TypeScript | $(result "$TYPECHECK_RESULT") |"
+            echo "| Studio build | $(result "$BUILD_RESULT") |"
+          } >> "$GITHUB_STEP_SUMMARY"

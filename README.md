@@ -2,11 +2,63 @@
 
 A statically generated Next.js music website backed by the existing Sanity production dataset (`nulp5uls`). Public pages include complete content without JavaScript. The separate Studio edits the same documents and preserves their type names and fields.
 
-## Development and checks
+## Technologies
 
-Use Node 24 (see `.node-version`). Run `npm ci`, then `npm run dev`. The predev step fetches published content and generates responsive images. Run `npm test`, `npm run build`, and `npm run check:export` before deployment. Build output is `out/`.
+- **Node.js 24** — version pinned in `.node-version`.
+- **TypeScript 7** — site and Sanity Studio source.
+- **Next.js 16 and React 19** — statically generated portfolio site.
+- **Sanity Studio 6** — content editor; published posts provide song pages.
+- **Sharp** — generates responsive images and social preview during builds.
+- **Biome and Prettier** — lint and format checks.
+- **Playwright** — Chromium browser smoke tests.
 
-The build fetches published documents without credentials. An unavailable API, empty dataset, missing slug, or duplicate slug fails the build so Render can retain the previous successful deployment. Unpublished drafts are never included. A build is required after publishing, editing, or deleting content. Content is sorted by publication date, then creation date.
+## Run the website locally
+
+```sh
+npm ci
+npm run dev
+```
+
+Open <http://localhost:3000>. The development command fetches published Sanity posts and prepares responsive images before starting. It needs network access to Sanity’s public production dataset.
+
+## Build the website
+
+```sh
+npm run build
+npm run check:export
+```
+
+The build fetches published posts, generates responsive images, and exports the static website to `out/`. Render publishes this folder. A failed Sanity request, empty dataset, missing title or slug, duplicate slug, or invalid content fails the build. Drafts are excluded. Posts are sorted by publication date, then creation date. Rebuild after publishing, editing, or deleting content.
+
+## Checks
+
+Run the site checks from the repository root:
+
+```sh
+npm audit --audit-level=high
+npm run lint
+npm run format:check
+npm run typecheck
+npm test
+npm run build
+npm run check:export
+npx playwright install chromium
+npm run test:browser
+```
+
+These checks cover dependency vulnerabilities, lint and formatting, TypeScript, content normalization and Sanity field validation, production generation, exported page metadata and links, sitemap and robots files, and browser navigation/video activation.
+
+Run Sanity Studio checks from `sanity/`:
+
+```sh
+npm ci
+npm audit --audit-level=high
+npm run validate
+npm run typecheck
+npm run build
+```
+
+Start the Studio locally with `npm run dev` from `sanity/`. GitHub Actions runs the site and Studio checks on pushes and pull requests. Each run summary shows a live ✅, ❌, cancelled, or not-run result for every check. The workflow is in `.github/workflows/check.yml`.
 
 Photos in `assets/originals/` are preserved for future edits. Build-time Sharp processing generates 640px and 1280px AVIF/WebP variants and a social preview. Originals are not copied to the public deployment. Generated files are ignored by Git.
 

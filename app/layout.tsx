@@ -32,8 +32,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Socials />
         <script
           type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be script text; serialize data and escape less-than signs to block script-tag injection.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(artist).replace(/</g, "\u003c"),
+            __html: JSON.stringify(artist).replace(/</g, "\\u003c"),
           }}
         />
       </body>

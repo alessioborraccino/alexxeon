@@ -1,19 +1,22 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 export default function Header() {
   const [open, setOpen] = useState(false);
   return (
     <header className="site-header">
       <Link href="/" aria-label="Alexx Eon home" onClick={() => setOpen(false)}>
-        <img
+        <Image
           src="/full-logo-white.png"
-          width="314"
-          height="48"
+          width={314}
+          height={48}
           alt="Alexx Eon"
+          unoptimized
         />
       </Link>
       <button
+        type="button"
         className="menu-toggle"
         aria-expanded={open}
         aria-controls="main-navigation"

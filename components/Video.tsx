@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 type VideoProps = { id?: string | null; title: string; eager?: boolean };
 export default function Video({ id, title, eager = false }: VideoProps) {
   const [playing, setPlaying] = useState(false);
@@ -17,16 +18,18 @@ export default function Video({ id, title, eager = false }: VideoProps) {
         />
       ) : (
         <button
+          type="button"
           className="video-preview"
           onClick={() => setPlaying(true)}
           aria-label={`Play ${title}`}
         >
-          <img
+          <Image
             src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
             width="480"
             height="360"
             alt=""
             loading={eager ? "eager" : "lazy"}
+            unoptimized
           />
           <span className="play">
             ▶<span className="sr-only"> Play video</span>

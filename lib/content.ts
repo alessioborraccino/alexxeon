@@ -70,8 +70,11 @@ export function normalizePosts(posts: SanityPostInput[]): Post[] {
   const slugs = new Set<string>();
   return posts.map((post) => {
     const slug = post.slug?.current;
+    const videoUrl = post.mainVideo?.url;
+    const videoId = youtubeId(videoUrl);
     if (
-      !post.title ||
+      typeof post.title !== "string" ||
+      post.title.trim().length === 0 ||
       typeof slug !== "string" ||
       !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ||
       slugs.has(slug)
@@ -79,6 +82,58 @@ export function normalizePosts(posts: SanityPostInput[]): Post[] {
       throw new Error(
         `Post ${post._id} needs a unique URL-safe slug and title before publishing.`,
       );
+    }
+    if (videoUrl && !videoId) {
+      throw new Error(
+        `Post ${post._id} has an invalid YouTube URL. Use a valid youtube.com or youtu.be video link.`,
+      );
+    }
+    if (post.body != null && !Array.isArray(post.body)) {
+      throw new Error(`Post ${post._id} body must be a Portable Text array.`);
+    }
+    for (const block of post.body || []) {
+      const value = block as unknown as Record<string, unknown>;
+      if (!block || typeof value._type !== "string") {
+        throw new Error(
+          `Post ${post._id} body contains a block without a valid _type.`,
+        );
+      }
+      if (
+        value._type === "block" &&
+        (!Array.isArray(value.children) ||
+          value.children.some(
+            (child) =>
+              !child ||
+              typeof child !== "object" ||
+              !("text" in child) ||
+              typeof child.text !== "string",
+          ))
+      ) {
+        throw new Error(
+          `Post ${post._id} contains malformed Portable Text. Check its text blocks.`,
+        );
+      }
+      if (value._type === "youtube" && !youtubeId(value.url as string)) {
+        throw new Error(
+          `Post ${post._id} body contains an invalid YouTube video URL.`,
+        );
+      }
+      if (value._type === "image") {
+        const asset = value.asset as { _ref?: unknown } | undefined;
+        if (
+          typeof asset?._ref !== "string" ||
+          !/^image-.+-\d+x\d+-\w+$/.test(asset._ref)
+        ) {
+          throw new Error(
+            `Post ${post._id} body contains an invalid image asset.`,
+          );
+        }
+      }
+      if (!["block", "youtube", "image"].includes(value._type)) {
+        throw new Error(
+          `Post ${post._id} body contains unsupported block type ${value._type}.`,
+        );
+      }
     }
     slugs.add(slug);
     return {
@@ -89,7 +144,7 @@ export function normalizePosts(posts: SanityPostInput[]): Post[] {
       mainVideo: post.mainVideo,
       publishedAt: post.publishedAt,
       _updatedAt: post._updatedAt,
-      videoId: youtubeId(post.mainVideo?.url),
+      videoId,
       description:
         plainText(post.body || []).slice(0, 160) ||
         `Listen to ${post.title} by Alexx Eon.`,

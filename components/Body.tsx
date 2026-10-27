@@ -1,5 +1,6 @@
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
+import Image from "next/image";
 import Video from "./Video";
 import { youtubeId } from "../lib/content";
 const components = {
@@ -12,7 +13,7 @@ const components = {
           {children}
         </a>
       ) : (
-        <>{children}</>
+        children
       );
     },
   },
@@ -25,13 +26,14 @@ const components = {
       if (!match) return null;
       const [, id, width, height, format] = match;
       return (
-        <img
+        <Image
           className="body-image"
           src={`https://cdn.sanity.io/images/nulp5uls/production/${id}-${width}x${height}.${format}?w=1200&auto=format`}
-          width={width}
-          height={height}
+          width={Number(width)}
+          height={Number(height)}
           alt={value.alt || ""}
           loading="lazy"
+          unoptimized
         />
       );
     },
