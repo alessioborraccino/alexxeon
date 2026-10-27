@@ -1,15 +1,71 @@
 * {
   box-sizing: border-box;
 }
+:root {
+  color-scheme: light;
+  --page-background: #075e54;
+  --page-foreground: #f5fffc;
+  --header-background: #00796e;
+  --surface-background: #faf9f6;
+  --surface-foreground: #124b43;
+  --surface-shadow: 6 75 67;
+  --button-background: #f5fffc;
+  --button-foreground: #075047;
+  --image-placeholder: #dfe9e6;
+  --image-highlight: #f5faf8;
+  --skip-background: #ffffff;
+  --skip-foreground: #112233;
+  --control-background: #f5fffc;
+  --control-foreground: #075047;
+  --control-border: #b9e3d7;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page-background: #092d29;
+  --page-foreground: #eaf5f1;
+  --header-background: #064b43;
+  --surface-background: #173e38;
+  --surface-foreground: #e7f2ee;
+  --surface-shadow: 2 20 17;
+  --button-background: #d9eee7;
+  --button-foreground: #092d29;
+  --image-placeholder: #203d39;
+  --image-highlight: #345650;
+  --skip-background: #d9eee7;
+  --skip-foreground: #092d29;
+  --control-background: #173e38;
+  --control-foreground: #e7f2ee;
+  --control-border: #609c8d;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] {
+    color-scheme: dark;
+    --page-background: #092d29;
+    --page-foreground: #eaf5f1;
+    --header-background: #064b43;
+    --surface-background: #173e38;
+    --surface-foreground: #e7f2ee;
+    --surface-shadow: 2 20 17;
+    --button-background: #d9eee7;
+    --button-foreground: #092d29;
+    --image-placeholder: #203d39;
+    --image-highlight: #345650;
+    --skip-background: #d9eee7;
+    --skip-foreground: #092d29;
+    --control-background: #173e38;
+    --control-foreground: #e7f2ee;
+    --control-border: #609c8d;
+  }
+}
 html {
-  background-color: #075e54;
+  background-color: var(--page-background);
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
 }
 body {
   margin: 0;
-  background-color: #075e54;
-  color: #f5fffc;
+  background-color: var(--page-background);
+  color: var(--page-foreground);
   font-family: system-ui, sans-serif;
   line-height: 1.65;
 }
@@ -28,7 +84,7 @@ a {
 :focus-visible {
   outline: 3px solid #ffdb77;
   outline-offset: 2px;
-  box-shadow: 0 0 0 6px #075e54;
+  box-shadow: 0 0 0 6px var(--page-background);
 }
 h1,
 h2,
@@ -52,7 +108,7 @@ h3 {
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem max(1.5rem, calc((100vw - 1160px) / 2));
-  background: #00796e;
+  background: var(--header-background);
   position: relative;
   z-index: 2;
   box-shadow:
@@ -71,6 +127,23 @@ h3 {
 }
 .menu-toggle {
   display: none;
+}
+.theme-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+.theme-control select {
+  min-height: 44px;
+  border: 1px solid var(--control-border);
+  border-radius: 0.4rem;
+  background: var(--control-background);
+  color: var(--control-foreground);
+  padding: 0.35rem 0.6rem;
+  font: inherit;
 }
 .hero,
 .section {
@@ -93,8 +166,8 @@ h3 {
 }
 .button {
   display: inline-block;
-  background: #f5fffc;
-  color: #075047;
+  background: var(--button-background);
+  color: var(--button-foreground);
   border-radius: 0.4rem;
   padding: 0.7rem 1.15rem;
   font-weight: 700;
@@ -108,14 +181,14 @@ h3 {
   gap: 1.5rem;
 }
 .card {
-  background: #fff;
-  color: #124b43;
+  background: var(--surface-background);
+  color: var(--surface-foreground);
   padding: 1.5rem;
   border-radius: 0.65rem;
   box-shadow:
-    0 2px 4px rgb(6 75 67 / 10%),
-    0 10px 24px rgb(6 75 67 / 18%),
-    inset 0 1px 0 rgb(255 255 255 / 85%);
+    0 2px 4px rgb(var(--surface-shadow) / 10%),
+    0 10px 24px rgb(var(--surface-shadow) / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 55%);
 }
 .card h3 a {
   text-decoration: none;
@@ -149,7 +222,7 @@ h3 {
   display: block;
   position: relative;
   overflow: hidden;
-  background: #dfe9e6;
+  background: var(--image-placeholder);
 }
 .image-frame__picture {
   display: block;
@@ -167,9 +240,9 @@ h3 {
   inset: 0;
   background: linear-gradient(
     100deg,
-    #dfe9e6 20%,
-    #f5faf8 38%,
-    #dfe9e6 56%
+    var(--image-placeholder) 20%,
+    var(--image-highlight) 38%,
+    var(--image-placeholder) 56%
   );
   background-size: 220% 100%;
   animation: image-shimmer 1.4s ease-in-out infinite;
@@ -187,6 +260,14 @@ h3 {
   filter: brightness(0) saturate(100%);
   opacity: 0.22;
   object-fit: contain;
+}
+:root[data-theme="dark"] .image-frame__fallback img {
+  filter: brightness(0) invert(1);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] .image-frame__fallback img {
+    filter: brightness(0) invert(1);
+  }
 }
 .body-image {
   width: 100%;
@@ -237,8 +318,8 @@ h3 {
 .body-image {
   border-radius: 0.5rem;
   box-shadow:
-    0 2px 4px rgb(6 75 67 / 12%),
-    0 10px 22px rgb(6 75 67 / 20%);
+    0 2px 4px rgb(var(--surface-shadow) / 12%),
+    0 10px 22px rgb(var(--surface-shadow) / 20%);
 }
 footer {
   max-width: 1160px;
@@ -273,22 +354,16 @@ footer {
 .skip-link:focus {
   position: absolute;
   z-index: 10;
-  background: white;
-  color: #123;
+  background: var(--skip-background);
+  color: var(--skip-foreground);
   padding: 1rem;
 }
 @media (orientation: landscape) and (max-height: 700px) {
   .hero,
   .section,
   footer {
-    padding-left: max(
-      1.5rem,
-      calc(env(safe-area-inset-left, 0px) + 1.5rem)
-    );
-    padding-right: max(
-      1.5rem,
-      calc(env(safe-area-inset-right, 0px) + 1.5rem)
-    );
+    padding-left: max(1.5rem, calc(env(safe-area-inset-left, 0px) + 1.5rem));
+    padding-right: max(1.5rem, calc(env(safe-area-inset-right, 0px) + 1.5rem));
   }
   .site-header {
     padding-left: max(
@@ -334,15 +409,21 @@ footer {
   .navigation {
     display: none;
     width: 100%;
+    flex-wrap: wrap;
     position: absolute;
     top: 100%;
     left: 0;
-    background: #00796e;
+    background: var(--header-background);
     padding-block: 0.5rem;
     padding-inline: 1.5rem;
   }
   .navigation.open {
     display: flex;
+  }
+  .theme-control {
+    flex-basis: 100%;
+    justify-content: space-between;
+    margin-left: 0;
   }
   .hero {
     padding-block: 2.5rem;
