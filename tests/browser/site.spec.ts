@@ -40,6 +40,9 @@ test("mobile navigation opens, navigates, and closes", async ({ page }) => {
   await expect(navigation).toHaveAttribute("aria-hidden", "false");
   await expect(navigation).toHaveCSS("opacity", "1");
   await expect(navigation).toHaveCSS("transition-duration", /0\.24s/);
+  await expect(
+    page.getByRole("combobox", { name: "Color theme" }),
+  ).toBeVisible();
   await page.getByRole("link", { name: "Bio" }).click();
   await expect(page).toHaveURL(/\/bio\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -203,8 +206,48 @@ test("landscape header respects horizontal safe areas without changing desktop l
 test("music cards have a subtle shadow", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator(".card").first()).toHaveCSS(
+    "background-color",
+    "rgb(250, 249, 246)",
+  );
+  await expect(page.locator(".card").first()).toHaveCSS(
     "box-shadow",
     /rgba\(6, 75, 67, 0\.1\).*rgba\(6, 75, 67, 0\.18\)/,
+  );
+});
+
+test("theme selector supports system preference and saved overrides", async ({
+  page,
+}) => {
+  await page.emulateMedia({ colorScheme: "light" });
+  await page.goto("/");
+
+  const theme = page.getByRole("combobox", { name: "Color theme" });
+  const card = page.locator(".card").first();
+  await expect(theme).toHaveValue("system");
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(7, 94, 84)",
+  );
+
+  await theme.selectOption("dark");
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(9, 45, 41)",
+  );
+  await expect(card).toHaveCSS("background-color", "rgb(23, 62, 56)");
+  await page.reload();
+  await expect(theme).toHaveValue("dark");
+
+  await theme.selectOption("system");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(9, 45, 41)",
+  );
+  await page.emulateMedia({ colorScheme: "light" });
+  await expect(page.locator("body")).toHaveCSS(
+    "background-color",
+    "rgb(7, 94, 84)",
   );
 });
 
