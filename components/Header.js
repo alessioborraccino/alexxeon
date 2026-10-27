@@ -7,8 +7,8 @@ export default function Header() {
     <header className="site-header">
       <Link href="/" aria-label="Alexx Eon home" onClick={() => setOpen(false)}>
         <img
-          src="/full-logo-white.svg"
-          width="240"
+          src="/full-logo-white.png"
+          width="314"
           height="48"
           alt="Alexx Eon"
         />
