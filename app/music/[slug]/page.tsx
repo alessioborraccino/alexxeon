@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPosts } from "../../../lib/posts";
+import { getPostBySlug, getPosts } from "../../../lib/posts";
 import { pageMetadata } from "../../../lib/site";
 import Video from "../../../components/Video";
 import Body from "../../../components/Body";
@@ -11,14 +11,14 @@ export async function generateStaticParams() {
 type SongPageProps = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: SongPageProps) {
   const { slug } = await params;
-  const post = (await getPosts()).find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
   return post
     ? pageMetadata(post.title, post.description, `/music/${slug}/`)
     : {};
 }
 export default async function Song({ params }: SongPageProps) {
   const { slug } = await params;
-  const post = (await getPosts()).find((p) => p.slug === slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
   return (
     <main id="main" className="section song">
