@@ -22,5 +22,5 @@ export default async function PreferencesPage({
 }: PreferencesPageProps) {
   const { locale: value } = await params;
   if (!hasLocale(value)) notFound();
-  return <Preferences locale={value} />;
+  return <Preferences />;
 }

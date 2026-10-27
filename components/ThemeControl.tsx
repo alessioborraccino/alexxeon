@@ -1,42 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { messages, type Locale } from "../lib/i18n";
+import { messages } from "../lib/i18n";
+import { usePreferences } from "../preferences";
 
-type Theme = "system" | "light" | "dark";
-const storageKey = "alexxeon-theme";
-
-function isTheme(value: string | null): value is Theme {
-  return value === "system" || value === "light" || value === "dark";
-}
-
-export default function ThemeControl({ locale }: { locale: Locale }) {
+export default function ThemeControl() {
+  const { locale, setTheme, theme } = usePreferences();
   const t = messages[locale];
-  const [theme, setTheme] = useState<Theme>("system");
-
-  useEffect(() => {
-    let initialTheme: Theme = "system";
-    try {
-      const savedTheme = window.localStorage.getItem(storageKey);
-      if (isTheme(savedTheme)) initialTheme = savedTheme;
-    } catch {
-      // Use the device theme when browser storage is unavailable.
-    }
-
-    setTheme(initialTheme);
-    document.documentElement.dataset.theme = initialTheme;
-  }, []);
-
-  function changeTheme(value: string) {
-    if (!isTheme(value)) return;
-    setTheme(value);
-    document.documentElement.dataset.theme = value;
-    try {
-      window.localStorage.setItem(storageKey, value);
-    } catch {
-      // The selection still applies for this page view without storage.
-    }
-  }
 
   return (
     <label className="theme-control">
@@ -44,7 +13,12 @@ export default function ThemeControl({ locale }: { locale: Locale }) {
       <select
         aria-label={t.theme}
         value={theme}
-        onChange={(event) => changeTheme(event.currentTarget.value)}
+        onChange={(event) => {
+          const value = event.currentTarget.value;
+          if (value === "system" || value === "light" || value === "dark") {
+            setTheme(value);
+          }
+        }}
       >
         <option value="system">{t.themeOptions.system}</option>
         <option value="light">{t.themeOptions.light}</option>

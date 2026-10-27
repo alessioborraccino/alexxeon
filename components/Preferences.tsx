@@ -1,25 +1,12 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { localeNames, locales, messages, type Locale } from "../lib/i18n";
+import { localeNames, locales, messages } from "../lib/i18n";
+import { isLocale, usePreferences } from "../preferences";
 import ThemeControl from "./ThemeControl";
 
-const languageStorageKey = "alexxeon-language";
-
-export default function Preferences({ locale }: { locale: Locale }) {
-  const pathname = usePathname();
-  const router = useRouter();
+export default function Preferences() {
+  const { locale, setLanguage } = usePreferences();
   const t = messages[locale];
-
-  function changeLocale(value: string) {
-    if (!locales.some((item) => item === value)) return;
-    try {
-      window.localStorage.setItem(languageStorageKey, value);
-    } catch {
-      // The route change still applies for this page view without storage.
-    }
-    router.push(pathname.replace(/^\/[a-z]{2}(?=\/|$)/, `/${value}`));
-  }
 
   return (
     <main id="main" className="section preferences">
@@ -31,7 +18,10 @@ export default function Preferences({ locale }: { locale: Locale }) {
           <select
             aria-label={t.language}
             value={locale}
-            onChange={(event) => changeLocale(event.currentTarget.value)}
+            onChange={(event) => {
+              const value = event.currentTarget.value;
+              if (isLocale(value)) setLanguage(value);
+            }}
           >
             {locales.map((item) => (
               <option value={item} key={item}>
@@ -40,7 +30,7 @@ export default function Preferences({ locale }: { locale: Locale }) {
             ))}
           </select>
         </label>
-        <ThemeControl locale={locale} />
+        <ThemeControl />
       </div>
     </main>
   );

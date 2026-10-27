@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Video from "../../components/Video";
+import { ButtonLink, Card } from "../../ui";
 import type { Post } from "../../lib/content";
 import { messages, type Locale } from "../../lib/i18n";
 
@@ -20,19 +21,16 @@ export default function HomePage({ posts, locale }: HomePageProps) {
         <p>{t.heroLead}</p>
         <p>{t.heroDetail}</p>
         {featuredPost && (
-          <Link
-            className="button"
-            href={`/${locale}/music/${featuredPost.slug}/`}
-          >
+          <ButtonLink href={`/${locale}/music/${featuredPost.slug}/`}>
             {t.listenTo} {featuredPost.title}
-          </Link>
+          </ButtonLink>
         )}
       </section>
       <section className="section" id="music">
         <h2>{t.musicHeading}</h2>
         <div className="music-grid">
           {posts.map((post, index) => (
-            <article className="card" key={post._id}>
+            <Card key={post._id}>
               <h3>
                 <Link href={`/${locale}/music/${post.slug}/`}>
                   {post.title}
@@ -44,7 +42,7 @@ export default function HomePage({ posts, locale }: HomePageProps) {
                 {t.aboutCover}
                 <span className="sr-only">: {post.title}</span>
               </Link>
-            </article>
+            </Card>
           ))}
         </div>
       </section>

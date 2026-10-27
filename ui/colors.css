@@ -1,0 +1,35 @@
+/* Raw palette. Keep color values here; map them to semantic roles per theme. */
+:root {
+  --color-green-950: #071f1d;
+  --color-green-900: #092d29;
+  --color-green-850: #102b2b;
+  --color-green-800: #073b39;
+  --color-green-700: #075047;
+  --color-green-650: #075427;
+  --color-green-600: #075e54;
+  --color-green-500: #00796e;
+  --color-green-400: #064b43;
+  --color-green-300: #124b43;
+  --color-green-200: #8ad4be;
+  --color-green-100: #b9e3d7;
+  --color-green-50: #dfe9e6;
+  --color-green-25: #f5faf8;
+  --color-ivory: #faf9f6;
+  --color-white: #ffffff;
+  --color-cream: #f5fffc;
+  --color-mint-100: #d9eee7;
+  --color-mint-200: #e7f2ee;
+  --color-mint-300: #eaf5f1;
+  --color-night-green: #173e38;
+  --color-deep-green: #203d39;
+  --color-sage: #345650;
+  --color-accessible-yellow: #ffdb77;
+  --color-ink: #112233;
+  --color-play-red: #b80000;
+  --color-muted-teal: #609c8d;
+  --color-shadow-rgb-light: 6 75 67;
+  --color-shadow-rgb-dark: 0 32 28;
+  --color-header-shadow-rgb-light: 0 72 64;
+  --color-shadow-rgb-highlight: 255 255 255;
+  --color-border-rgb-dark: 231 242 238;
+}

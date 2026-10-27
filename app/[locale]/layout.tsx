@@ -5,6 +5,7 @@ import Header from "../../components/Header";
 import Socials from "../../components/Socials";
 import { hasLocale, locales, messages } from "../../lib/i18n";
 import { siteUrl, socials } from "../../lib/site";
+import { PreferencesProvider, themeBootstrapScript } from "../../preferences";
 
 export const dynamicParams = false;
 
@@ -60,7 +61,7 @@ export default async function LocaleLayout({
           // Set saved theme before first paint to avoid a theme flash.
           // biome-ignore lint/security/noDangerouslySetInnerHtml: This fixed inline script reads one localStorage key and applies a validated theme value before first paint.
           dangerouslySetInnerHTML={{
-            __html: `(() => { try { const theme = localStorage.getItem("alexxeon-theme"); document.documentElement.dataset.theme = theme === "light" || theme === "dark" ? theme : "system"; } catch { document.documentElement.dataset.theme = "system"; } })();`,
+            __html: themeBootstrapScript,
           }}
         />
       </head>
@@ -68,9 +69,11 @@ export default async function LocaleLayout({
         <a className="skip-link" href="#main">
           {t.skipToContent}
         </a>
-        <Header locale={value} />
-        {children}
-        <Socials locale={value} />
+        <PreferencesProvider locale={value}>
+          <Header locale={value} />
+          {children}
+          <Socials locale={value} />
+        </PreferencesProvider>
         <script
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be script text; serialize data and escape less-than signs to block script-tag injection.

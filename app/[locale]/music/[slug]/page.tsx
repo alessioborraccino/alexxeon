@@ -5,6 +5,7 @@ import { hasLocale, messages } from "../../../../lib/i18n";
 import { pageMetadata } from "../../../../lib/site";
 import Video from "../../../../components/Video";
 import Body from "../../../../components/Body";
+import { ButtonLink } from "../../../../ui";
 export const dynamicParams = false;
 export async function generateStaticParams({
   params,
@@ -44,12 +45,9 @@ export default async function Song({ params }: SongPageProps) {
         <Body value={post.body} />
       </div>
       {post.videoId && (
-        <a
-          className="button"
-          href={`https://www.youtube.com/watch?v=${post.videoId}`}
-        >
+        <ButtonLink href={`https://www.youtube.com/watch?v=${post.videoId}`}>
           {t.watchYouTube}
-        </a>
+        </ButtonLink>
       )}
     </main>
   );

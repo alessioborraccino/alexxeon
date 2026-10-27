@@ -1,5 +1,5 @@
 import "./globals.css";
-import Link from "next/link";
+import { ButtonLink } from "../ui";
 
 export default function GlobalNotFound() {
   return (
@@ -8,9 +8,7 @@ export default function GlobalNotFound() {
         <main id="main" className="section">
           <h1>Page not found</h1>
           <p>This page does not exist or has moved.</p>
-          <Link className="button" href="/en/">
-            Back to music
-          </Link>
+          <ButtonLink href="/en/">Back to music</ButtonLink>
         </main>
       </body>
     </html>
