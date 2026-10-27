@@ -226,6 +226,7 @@ footer {
     right: 0;
     left: 0;
     z-index: 20;
+    box-shadow: 0 4px 14px #001d2433;
     height: calc(74px + env(safe-area-inset-top, 0px));
     padding: env(safe-area-inset-top, 0px) 1.5rem 0;
   }

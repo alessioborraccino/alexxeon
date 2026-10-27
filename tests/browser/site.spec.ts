@@ -47,6 +47,10 @@ test("mobile header stays pinned while scrolling", async ({ page }) => {
   const header = page.locator(".site-header");
   await expect(header).toHaveCSS("background-color", "rgb(0, 121, 110)");
   await expect(header).toHaveCSS("position", "fixed");
+  await expect(header).toHaveCSS(
+    "box-shadow",
+    "rgba(0, 29, 36, 0.2) 0px 4px 14px 0px",
+  );
   await expect(page.locator(".navigation")).toHaveCSS("display", "none");
   const headerHeight = await header.evaluate(
     (element) => element.getBoundingClientRect().height,
