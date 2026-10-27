@@ -152,3 +152,16 @@ export function normalizePosts(posts: SanityPostInput[]): Post[] {
     };
   });
 }
+
+/** Keeps translated post lists in the same order as the canonical language. */
+export function orderPostsLike<T extends { slug: string }>(
+  posts: T[],
+  reference: readonly { slug: string }[],
+): T[] {
+  const order = new Map(reference.map((post, index) => [post.slug, index]));
+  return [...posts].sort(
+    (a, b) =>
+      (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
+  );
+}

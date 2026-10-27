@@ -1,6 +1,10 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { createClient } from "@sanity/client";
-import { normalizePosts, type SanityPostInput } from "../lib/content";
+import {
+  normalizePosts,
+  orderPostsLike,
+  type SanityPostInput,
+} from "../lib/content";
 import { locales, type Locale } from "../lib/i18n";
 const client = createClient({
   projectId: "nulp5uls",
@@ -38,6 +42,10 @@ for (const locale of locales.filter((item) => item !== "en")) {
       `Published ${locale} posts must match English slugs so the language switcher can keep users on the same song.`,
     );
   }
+  postsByLocale[locale] = orderPostsLike(
+    postsByLocale[locale],
+    postsByLocale.en,
+  );
 }
 await mkdir(".generated", { recursive: true });
 await writeFile(

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { youtubeId, normalizePosts } from "../lib/content";
+import { youtubeId, normalizePosts, orderPostsLike } from "../lib/content";
 import type { PortableTextBlock } from "@portabletext/types";
 test("YouTube links support existing embeds, short links, and Shorts without accepting other hosts", () => {
   for (const url of [
@@ -48,6 +48,12 @@ test("Published songs keep full body and receive stable slugs and readable descr
   assert.equal(post.description, "First paragraph. Second paragraph.");
   assert.deepEqual(post.body, body);
   assert.equal(post.videoId, null);
+});
+
+test("translated posts keep canonical language order", () => {
+  const reference = ["newest", "middle", "oldest"].map((slug) => ({ slug }));
+  const translated = ["oldest", "newest", "middle"].map((slug) => ({ slug }));
+  assert.deepEqual(orderPostsLike(translated, reference), reference);
 });
 test("Bad or duplicate URLs stop a build instead of silently dropping content", () => {
   for (const slug of [undefined, "../bad", "with spaces"])

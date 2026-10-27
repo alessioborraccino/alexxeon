@@ -50,6 +50,22 @@ test("saved language takes priority over device language", async ({
   await context.close();
 });
 
+test("translated home pages keep English post order", async ({ page }) => {
+  const canonicalSlugs = postsByLocale.en.map((post) => post.slug);
+
+  for (const locale of ["it", "de"] as const) {
+    await page.goto(`/${locale}/`);
+    const displayedSlugs = await page
+      .locator(".card h3 a")
+      .evaluateAll((links) =>
+        links.map((link) =>
+          new URL((link as HTMLAnchorElement).href).pathname.split("/").at(-2),
+        ),
+      );
+    expect(displayedSlugs).toEqual(canonicalSlugs);
+  }
+});
+
 test("preferences save language and use it for the root route", async ({
   page,
 }) => {
