@@ -4,7 +4,17 @@ import Link from "next/link";
 import Image from "next/image";
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [isPortraitMobile, setIsPortraitMobile] = useState(false);
   const menuToggleRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const media = window.matchMedia(
+      "(max-width: 650px) and (orientation: portrait)",
+    );
+    const updateViewport = () => setIsPortraitMobile(media.matches);
+    updateViewport();
+    media.addEventListener("change", updateViewport);
+    return () => media.removeEventListener("change", updateViewport);
+  }, []);
   useEffect(() => {
     if (!open) return;
     function closeOnEscape(event: KeyboardEvent) {
@@ -45,8 +55,8 @@ export default function Header() {
         <nav
           id="main-navigation"
           aria-label="Main navigation"
-          aria-hidden={!open}
-          inert={!open}
+          aria-hidden={isPortraitMobile ? !open : undefined}
+          inert={isPortraitMobile && !open}
           className={open ? "navigation open" : "navigation"}
         >
           <Link href="/" onClick={() => setOpen(false)}>

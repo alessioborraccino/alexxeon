@@ -71,6 +71,26 @@ test("mobile touch taps activate portrait navigation links", async ({
   await context.close();
 });
 
+test("landscape touch taps activate visible navigation links", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 844, height: 390 },
+    isMobile: true,
+    hasTouch: true,
+  });
+  const page = await context.newPage();
+  await page.goto("/");
+
+  const navigation = page.locator("#main-navigation");
+  const bioLink = page.getByRole("link", { name: "Bio" });
+  await expect(navigation).not.toHaveAttribute("inert", "");
+  await expect(navigation).not.toHaveAttribute("aria-hidden", "true");
+  await bioLink.tap();
+  await expect(page).toHaveURL(/\/bio\/$/);
+  await context.close();
+});
+
 test("keyboard users can skip content and dismiss mobile navigation", async ({
   page,
 }) => {
