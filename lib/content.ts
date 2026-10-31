@@ -6,6 +6,7 @@ export interface SanityPostInput {
   title?: string | null;
   slug?: { current?: string | null } | null;
   body?: PortableTextBlock[] | null;
+  lyrics?: string | null;
   mainVideo?: { url?: string | null } | null;
   publishedAt?: string | null;
   _updatedAt?: string | null;
@@ -16,6 +17,7 @@ export interface Post {
   title: string;
   slug: string;
   body?: PortableTextBlock[] | null;
+  lyrics?: string | null;
   mainVideo?: { url?: string | null } | null;
   publishedAt?: string | null;
   _updatedAt?: string | null;
@@ -89,6 +91,9 @@ export function normalizePosts(posts: SanityPostInput[]): Post[] {
         `Post ${post._id} has an invalid YouTube URL. Use a valid youtube.com or youtu.be video link.`,
       );
     }
+    if (post.lyrics != null && typeof post.lyrics !== "string") {
+      throw new Error(`Post ${post._id} lyrics must be plain text.`);
+    }
     if (post.body != null && !Array.isArray(post.body)) {
       throw new Error(`Post ${post._id} body must be a Portable Text array.`);
     }
@@ -142,6 +147,7 @@ export function normalizePosts(posts: SanityPostInput[]): Post[] {
       title: post.title,
       slug,
       body: post.body,
+      lyrics: post.lyrics,
       mainVideo: post.mainVideo,
       publishedAt: post.publishedAt,
       _updatedAt: post._updatedAt,

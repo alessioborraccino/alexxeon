@@ -14,7 +14,7 @@ const client = createClient({
   perspective: "published",
 });
 const documents = await client.fetch<SanityPostInput[]>(
-  `*[_type == "post"] | order(publishedAt desc, _createdAt desc) { _id, language, title, slug, body, mainVideo, publishedAt, _updatedAt }`,
+  `*[_type == "post"] | order(publishedAt desc, _createdAt desc) { _id, language, title, slug, body, lyrics, mainVideo, publishedAt, _updatedAt }`,
 );
 const postsByLocale = Object.fromEntries(
   locales.map((locale) => {

@@ -20,7 +20,8 @@ export function validatePostSlug(value: unknown): true | string {
 }
 
 export function validateYoutubeUrl(value: unknown): true | string {
-  if (typeof value !== "string" || value.length === 0) return true;
+  if (typeof value !== "string" || value.length === 0)
+    return "Enter a YouTube video URL.";
   try {
     const url = new URL(value);
     if (
@@ -47,4 +48,29 @@ export function validateYoutubeUrl(value: unknown): true | string {
   } catch {
     return "Use a valid YouTube video URL.";
   }
+}
+import type { SanityClient } from "@sanity/client";
+
+export async function isPostSlugUnique(
+  slug: string,
+  {
+    document,
+    getClient,
+  }: {
+    document?: { _id: string; language?: unknown };
+    getClient(options: { apiVersion: string }): Pick<SanityClient, "fetch">;
+  },
+): Promise<boolean> {
+  const id = document?._id.replace(/^drafts\./, "");
+  return getClient({ apiVersion: "2025-02-19" }).fetch<boolean>(
+    `!defined(*[_type == "post" && slug.current == $slug &&
+      coalesce(language, "en") == $language &&
+      !(_id in $excludedIds)][0]._id)`,
+    {
+      slug,
+      language: document?.language || "en",
+      excludedIds: id ? [id, `drafts.${id}`] : [],
+    },
+    { perspective: "raw", useCdn: false },
+  );
 }

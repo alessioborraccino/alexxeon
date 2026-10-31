@@ -101,3 +101,9 @@ Before replacing the production Studio, confirm login, existing post loading, dr
 Retain the previous Render deploy and its SPA rewrite configuration. Roll back the deploy and restore that rewrite together if needed. Revert the migration commit to restore the old build tool and Studio configuration; no content rollback is needed because this migration does not write to Sanity.
 
 Before rollout, verify desktop/mobile navigation, video activation, biography photos, plain HTML content, unique metadata, sitemap, and missing routes. After rollout verify HTTP 200 for real pages, HTTP 404 for missing pages, HTTPS/domain redirects, and that no `X-Robots-Tag: noindex` header is configured. Never add a catch-all HTML rewrite to this static export.
+
+## Lyrics and sharing
+
+Each Sanity post has an optional **Lyrics** text field. Enter lyrics on the appropriate language document, preserving line breaks and blank lines between verses. Publish and rebuild the site to display them. Songs without lyrics omit the section.
+
+Song pages include a sharing panel with native device sharing when available, a copy-link button, and email sharing. Shared URLs point to the canonical song page in the current language. If clipboard access fails, visitors can select and copy the visible URL manually.

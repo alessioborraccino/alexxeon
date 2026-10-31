@@ -2,7 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getPosts } from "../../../../lib/posts";
 import { hasLocale, messages } from "../../../../lib/i18n";
-import { pageMetadata } from "../../../../lib/site";
+import { pageMetadata, siteUrl } from "../../../../lib/site";
+import Lyrics from "../../../../components/Lyrics";
+import ShareSong from "../../../../components/ShareSong";
 import Video from "../../../../components/Video";
 import Body from "../../../../components/Body";
 import { ButtonLink } from "../../../../ui";
@@ -41,9 +43,15 @@ export default async function Song({ params }: SongPageProps) {
       <h1>{post.title}</h1>
       <p className="eyebrow">{t.version}</p>
       <Video id={post.videoId} title={post.title} eager />
+      <ShareSong
+        title={post.title}
+        url={`${siteUrl}/${locale}/music/${slug}/`}
+        locale={locale}
+      />
       <div className="prose">
         <Body value={post.body} />
       </div>
+      <Lyrics lyrics={post.lyrics} locale={locale} />
       {post.videoId && (
         <ButtonLink href={`https://www.youtube.com/watch?v=${post.videoId}`}>
           {t.watchYouTube}

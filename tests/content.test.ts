@@ -99,3 +99,14 @@ test("Invalid YouTube links and malformed Portable Text stop a build clearly", (
     /body contains an invalid YouTube video URL/,
   );
 });
+
+test("lyrics preserve verse spacing and remain optional", () => {
+  const post = { _id: "lyrics", title: "Song", slug: { current: "song" } };
+  const lyrics = "An original first line\nA second line\n\nA new verse";
+  assert.equal(normalizePosts([{ ...post, lyrics }])[0].lyrics, lyrics);
+  assert.equal(normalizePosts([post])[0].lyrics, undefined);
+  assert.throws(
+    () => normalizePosts([{ ...post, lyrics: 42 as never }]),
+    /lyrics must be plain text/,
+  );
+});

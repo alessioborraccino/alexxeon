@@ -10,7 +10,7 @@ export default defineType({
       name: "url",
       type: "url",
       title: "YouTube video URL",
-      validation: (Rule) => Rule.custom(validateYoutubeUrl),
+      validation: (Rule) => Rule.required().custom(validateYoutubeUrl),
     },
   ],
   preview: {

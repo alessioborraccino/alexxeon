@@ -1,5 +1,9 @@
 import { defineType } from "sanity";
-import { validatePostSlug, validatePostTitle } from "./post-validation";
+import {
+  isPostSlugUnique,
+  validatePostSlug,
+  validatePostTitle,
+} from "./post-validation";
 
 export default defineType({
   name: "post",
@@ -28,7 +32,7 @@ export default defineType({
         source: "title",
         maxLength: 96,
         // Localized documents intentionally share slugs across languages.
-        isUnique: () => true,
+        isUnique: isPostSlugUnique,
       },
     },
     {
@@ -63,6 +67,14 @@ export default defineType({
       name: "publishedAt",
       title: "Published at",
       type: "datetime",
+    },
+    {
+      name: "lyrics",
+      title: "Lyrics",
+      type: "text",
+      rows: 16,
+      description:
+        "Optional lyrics for this song. Keep line breaks and blank lines between verses.",
     },
     {
       name: "body",

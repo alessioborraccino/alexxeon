@@ -331,6 +331,48 @@ h3 {
 .prose {
   font-size: var(--font-size-prose);
 }
+.lyrics__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--font-size-prose);
+}
+.share-song {
+  margin-block: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--social-link-border);
+  border-radius: 0.4rem;
+}
+.share-song summary {
+  cursor: pointer;
+  padding-block: 0.5rem;
+  font-weight: var(--font-weight-emphasis);
+}
+.share-song__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+.share-song button {
+  border: 0;
+  font: inherit;
+  min-height: 44px;
+}
+.share-song__link {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+.share-song input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  font: inherit;
+  color: var(--control-foreground);
+  background: var(--control-background);
+  border: 1px solid var(--control-border);
+  border-radius: 0.4rem;
+}
 .bio {
   max-width: 1040px;
 }

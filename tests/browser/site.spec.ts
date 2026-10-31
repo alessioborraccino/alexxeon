@@ -8,6 +8,24 @@ const postsByLocale = JSON.parse(
 const posts = postsByLocale.en;
 const videoPost = posts.find((post) => post.videoId);
 
+test("root language links work without JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/");
+  await expect(page.getByRole("link", { name: "English" })).toHaveAttribute(
+    "href",
+    "/en/",
+  );
+  await expect(page.getByRole("link", { name: "Deutsch" })).toHaveAttribute(
+    "href",
+    "/de/",
+  );
+  await page.getByRole("link", { name: "Italiano" }).click();
+  await expect(page).toHaveURL(/\/it\/$/);
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await context.close();
+});
+
 async function waitForHydration(control: Locator) {
   await expect
     .poll(() =>
@@ -362,4 +380,70 @@ test("song video preview activates its privacy-enhanced YouTube player", async (
     "src",
     `https://www.youtube-nocookie.com/embed/${videoPost.videoId}?autoplay=1`,
   );
+});
+
+test("sharing copies the canonical localized song URL", async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "share", {
+      configurable: true,
+      value: undefined,
+    });
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async (text: string) => {
+          document.documentElement.dataset.copied = text;
+        },
+      },
+    });
+  });
+  const slug = posts[0].slug;
+  await page.goto(`/it/music/${slug}/?source=test#lyrics`);
+  await page.getByText("Condividi questa canzone", { exact: true }).click();
+  const copy = page.getByRole("button", { name: "Copia link", exact: true });
+  await waitForHydration(copy);
+  await copy.click();
+  const url = `https://www.alexxeon.com/it/music/${slug}/`;
+  await expect(page.locator("html")).toHaveAttribute("data-copied", url);
+  await expect(page.getByRole("status")).toHaveText("Link copiato.");
+  await expect(page.getByLabel("Link della canzone")).toHaveValue(url);
+  await expect(
+    page.getByRole("button", { name: "Altre opzioni di condivisione" }),
+  ).toHaveCount(0);
+});
+
+test("sharing handles native cancellation and clipboard failure", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "share", {
+      configurable: true,
+      value: async (data: ShareData) => {
+        document.documentElement.dataset.shared = data.url;
+        throw new DOMException("Cancelled", "AbortError");
+      },
+    });
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async () => {
+          throw new Error("Permission denied");
+        },
+      },
+    });
+  });
+  const slug = posts[0].slug;
+  await page.goto(`/en/music/${slug}/`);
+  await page.getByText("Share this song", { exact: true }).click();
+  await page.getByRole("button", { name: "More sharing options" }).click();
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-shared",
+    `https://www.alexxeon.com/en/music/${slug}/`,
+  );
+  await expect(page.getByRole("status")).toBeEmpty();
+  await page.getByRole("button", { name: "Copy link", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText(
+    "Copy failed. Select and copy the link below.",
+  );
+  await expect(page.getByLabel("Song link")).toBeVisible();
 });
