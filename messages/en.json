@@ -40,12 +40,8 @@
     "bio": "Meet Alexx Eon: an Italian-born musician blending piano, vocals, and electronic influences in personal interpretations of familiar songs."
   },
   "lyrics": "Lyrics",
-  "share": "Share this song",
-  "shareDevice": "More sharing options",
-  "copyLink": "Copy link",
+  "share": "Share",
   "linkCopied": "Link copied.",
   "copyFailed": "Copy failed. Select and copy the link below.",
-  "shareFailed": "Sharing unavailable. Copy the link instead.",
-  "shareEmail": "Email",
   "songLink": "Song link"
 }

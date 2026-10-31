@@ -40,12 +40,8 @@
     "bio": "Lerne Alexx Eon kennen: einen in Italien geborenen Musiker, der Klavier, Gesang und elektronische Einflüsse in persönliche Interpretationen bekannter Songs verbindet."
   },
   "lyrics": "Songtext",
-  "share": "Diesen Song teilen",
-  "shareDevice": "Weitere Optionen zum Teilen",
-  "copyLink": "Link kopieren",
+  "share": "Teilen",
   "linkCopied": "Link kopiert.",
   "copyFailed": "Kopieren fehlgeschlagen. Wähle den Link unten aus und kopiere ihn.",
-  "shareFailed": "Teilen nicht verfügbar. Kopiere stattdessen den Link.",
-  "shareEmail": "E-Mail",
   "songLink": "Link zum Song"
 }

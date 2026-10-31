@@ -43,20 +43,22 @@ export default async function Song({ params }: SongPageProps) {
       <h1>{post.title}</h1>
       <p className="eyebrow">{t.version}</p>
       <Video id={post.videoId} title={post.title} eager />
-      <ShareSong
-        title={post.title}
-        url={`${siteUrl}/${locale}/music/${slug}/`}
-        locale={locale}
-      />
       <div className="prose">
         <Body value={post.body} />
       </div>
       <Lyrics lyrics={post.lyrics} locale={locale} />
-      {post.videoId && (
-        <ButtonLink href={`https://www.youtube.com/watch?v=${post.videoId}`}>
-          {t.watchYouTube}
-        </ButtonLink>
-      )}
+      <div className="song-actions">
+        {post.videoId && (
+          <ButtonLink href={`https://www.youtube.com/watch?v=${post.videoId}`}>
+            {t.watchYouTube}
+          </ButtonLink>
+        )}
+        <ShareSong
+          title={post.title}
+          url={`${siteUrl}/${locale}/music/${slug}/`}
+          locale={locale}
+        />
+      </div>
     </main>
   );
 }

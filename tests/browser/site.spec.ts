@@ -399,17 +399,15 @@ test("sharing copies the canonical localized song URL", async ({ page }) => {
   });
   const slug = posts[0].slug;
   await page.goto(`/it/music/${slug}/?source=test#lyrics`);
-  await page.getByText("Condividi questa canzone", { exact: true }).click();
-  const copy = page.getByRole("button", { name: "Copia link", exact: true });
+  const copy = page.getByRole("button", { name: "Condividi", exact: true });
   await waitForHydration(copy);
   await copy.click();
   const url = `https://www.alexxeon.com/it/music/${slug}/`;
   await expect(page.locator("html")).toHaveAttribute("data-copied", url);
   await expect(page.getByRole("status")).toHaveText("Link copiato.");
-  await expect(page.getByLabel("Link della canzone")).toHaveValue(url);
-  await expect(
-    page.getByRole("button", { name: "Altre opzioni di condivisione" }),
-  ).toHaveCount(0);
+  await expect(page.getByLabel("Link della canzone")).toHaveCount(0);
+  await expect(page.locator(".song-actions > .button")).toHaveCount(2);
+  await expect(page.locator("details.share-song")).toHaveCount(0);
 });
 
 test("sharing handles native cancellation and clipboard failure", async ({
@@ -434,14 +432,21 @@ test("sharing handles native cancellation and clipboard failure", async ({
   });
   const slug = posts[0].slug;
   await page.goto(`/en/music/${slug}/`);
-  await page.getByText("Share this song", { exact: true }).click();
-  await page.getByRole("button", { name: "More sharing options" }).click();
+  await page.getByRole("button", { name: "Share", exact: true }).click();
   await expect(page.locator("html")).toHaveAttribute(
     "data-shared",
     `https://www.alexxeon.com/en/music/${slug}/`,
   );
   await expect(page.getByRole("status")).toBeEmpty();
-  await page.getByRole("button", { name: "Copy link", exact: true }).click();
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "share", {
+      configurable: true,
+      value: async () => {
+        throw new Error("Sharing unavailable");
+      },
+    });
+  });
+  await page.getByRole("button", { name: "Share", exact: true }).click();
   await expect(page.getByRole("status")).toHaveText(
     "Copy failed. Select and copy the link below.",
   );

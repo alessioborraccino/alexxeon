@@ -40,12 +40,8 @@
     "bio": "Scopri Alexx Eon: musicista nato in Italia che unisce pianoforte, voce e influenze elettroniche in reinterpretazioni personali di canzoni famose."
   },
   "lyrics": "Testo",
-  "share": "Condividi questa canzone",
-  "shareDevice": "Altre opzioni di condivisione",
-  "copyLink": "Copia link",
+  "share": "Condividi",
   "linkCopied": "Link copiato.",
   "copyFailed": "Copia non riuscita. Seleziona e copia il link qui sotto.",
-  "shareFailed": "Condivisione non disponibile. Copia il link.",
-  "shareEmail": "Email",
   "songLink": "Link della canzone"
 }

@@ -336,34 +336,34 @@ h3 {
   overflow-wrap: anywhere;
   font-size: var(--font-size-prose);
 }
-.share-song {
-  margin-block: 1.5rem;
-  padding: 1rem;
-  border: 1px solid var(--social-link-border);
-  border-radius: 0.4rem;
-}
-.share-song summary {
-  cursor: pointer;
-  padding-block: 0.5rem;
-  font-weight: var(--font-weight-emphasis);
-}
-.share-song__actions {
+.song-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 0.75rem;
-  align-items: baseline;
+  margin-top: 0.75rem;
 }
-.share-song button {
+.song-actions .button {
+  margin-top: 0;
   border: 0;
   font: inherit;
+  font-weight: var(--font-weight-emphasis);
   min-height: 44px;
 }
+.share-song__status:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
 .share-song__link {
+  flex-basis: 100%;
   display: grid;
   gap: 0.4rem;
   margin-top: 1rem;
 }
-.share-song input {
+.share-song__link input {
   width: 100%;
   min-width: 0;
   padding: 0.75rem;
