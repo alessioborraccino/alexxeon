@@ -1,13 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getPostBySlug, getPosts } from "../../../../lib/posts";
-import { hasLocale, messages } from "../../../../lib/i18n";
-import { pageMetadata, siteUrl } from "../../../../lib/site";
-import Lyrics from "../../../../components/Lyrics";
-import ShareSong from "../../../../components/ShareSong";
-import Video from "../../../../components/Video";
-import Body from "../../../../components/Body";
-import { ButtonLink } from "../../../../ui";
+import { getPostBySlug, getPosts } from "@/modules/content/server";
+import { hasLocale, messages } from "@/modules/i18n";
+import { pageMetadata } from "@/modules/site";
+import SongPage from "@/views/song";
 export const dynamicParams = false;
 export async function generateStaticParams({
   params,
@@ -34,31 +29,7 @@ export async function generateMetadata({ params }: SongPageProps) {
 export default async function Song({ params }: SongPageProps) {
   const { locale, slug } = await params;
   if (!hasLocale(locale)) notFound();
-  const t = messages[locale];
   const post = await getPostBySlug(locale, slug);
   if (!post) notFound();
-  return (
-    <main id="main" className="section song">
-      <Link href={`/${locale}/#music`}>{t.allMusic}</Link>
-      <h1>{post.title}</h1>
-      <p className="eyebrow">{t.version}</p>
-      <Video id={post.videoId} title={post.title} eager />
-      <div className="prose">
-        <Body value={post.body} />
-      </div>
-      <Lyrics lyrics={post.lyrics} locale={locale} />
-      <div className="song-actions">
-        {post.videoId && (
-          <ButtonLink href={`https://www.youtube.com/watch?v=${post.videoId}`}>
-            {t.watchYouTube}
-          </ButtonLink>
-        )}
-        <ShareSong
-          title={post.title}
-          url={`${siteUrl}/${locale}/music/${slug}/`}
-          locale={locale}
-        />
-      </div>
-    </main>
-  );
+  return <SongPage post={post} locale={locale} />;
 }

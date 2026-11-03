@@ -12,9 +12,63 @@ A statically generated Next.js music website backed by the existing Sanity produ
 - **Biome and Prettier** — lint and format checks.
 - **Playwright** — Chromium browser smoke tests.
 
+## Code organization
+
+```text
+app/                      Next.js routes, layouts, metadata, sitemap and robots
+views/                    Page composition and page-specific styles
+  home/                   Home page and music list
+  bio/                    Biography and photos
+  song/                   Song page, lyrics and sharing
+  preferences/            Preferences page and controls
+  language-redirect/      Root language selection
+  not-found/              Missing-page content
+  layout/                 Shared site header and footer
+ui/
+  index.ts                Public component exports
+  components/             ButtonLink, Card, Toast and ImageWithPlaceholder
+  styles/                 Colors, typography, themes and shared component styles
+modules/
+  content/                Published posts and rich-text rendering
+    index.ts              Browser-safe Post type and Body renderer
+    server.ts             Server-side getPosts and getPostBySlug
+    build.ts              Build-only fetchPublishedPosts
+    internal/             Sanity adapter, validation, types and snapshot repository
+  i18n/                   Locales, messages and private translation files
+  preferences/            Preference provider, storage and locale selection
+  site/                   Site identity, social links and metadata helpers
+  youtube/                Video player and URL parsing
+scripts/                  Build and export orchestration
+sanity/                   Independently configured content editing Studio
+```
+
+`views/` is deliberately named differently from `pages/`: Next.js reserves a root
+`pages/` directory for its other router. Route files validate route parameters,
+load data through public module interfaces, and render the matching view. Page
+components receive data through typed props. Each view owns its supporting
+components and styles.
+
+Import shared components from `@/ui`, modules from `@/modules/<name>`, and views
+from `@/views/<name>`. Use relative imports inside an owner. Files under
+`internal/` are implementation details, not consumer APIs. Tests of those
+implementations may import them directly. Public exports are explicit; avoid
+exporting every internal helper or combining all modules into one barrel.
+
+The content module keeps Sanity queries, document normalization, asset URLs, and
+Portable Text rendering private. The build script calls `content/build` to write
+`.generated/posts.json`; routes read that snapshot through `content/server`.
+Client components must not import either entry point. `internal/` is an enforced
+code boundary, not a place to hide secrets: anything shipped to browsers is public.
+The separate `sanity/` Studio retains its own dependencies and schema validation.
+
+`app/globals.css` composes styles from their owners. UI tokens and primitives live
+in `ui/styles/`; page styles live with their views; video and rich-text styles live
+with their modules. `npm test` checks public interfaces, dependency direction, CMS
+isolation, and transitive client/server boundaries alongside behavior tests.
+
 ## Localization
 
-Site interface translations live in `messages/en.json`, `messages/it.json`, and `messages/de.json`. `lib/i18n.ts` defines supported locale codes and names. Localized pages use prefixed routes such as `/en/`, `/it/bio/`, and `/de/music/the-loneliest/`; `/` redirects to `/en/`. The home, biography, and song pages publish canonical URLs and language alternates.
+Site interface translations live in `modules/i18n/internal/messages/en.json`, `it.json`, and `de.json`. `modules/i18n/index.ts` defines supported locale codes and names. Localized pages use prefixed routes such as `/en/`, `/it/bio/`, and `/de/music/the-loneliest/`; `/` redirects to `/en/`. The home, biography, and song pages publish canonical URLs and language alternates.
 
 Music translations are separate Sanity post documents. Set each document’s language to `en`, `it`, or `de`; keep its slug identical across languages so language switching stays on the same song. The Sanity Studio includes `@sanity/document-internationalization` for managing translation groups. The build reads published posts by language and stops if a locale is missing or its slugs do not match English. Translate content in Sanity; the build never machine-translates posts.
 

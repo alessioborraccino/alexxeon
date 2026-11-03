@@ -1,7 +1,7 @@
 import { readFile, stat } from "node:fs/promises";
 import assert from "node:assert/strict";
-import type { Post } from "../lib/content";
-import { locales, type Locale } from "../lib/i18n";
+import type { Post } from "@/modules/content";
+import { locales, type Locale } from "@/modules/i18n";
 
 const postsByLocale = JSON.parse(
   await readFile(".generated/posts.json", "utf8"),

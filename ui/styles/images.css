@@ -1,0 +1,61 @@
+.image-frame {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--image-placeholder);
+}
+.image-frame__picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.image-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.image-frame__shimmer {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    var(--image-placeholder) 20%,
+    var(--image-highlight) 38%,
+    var(--image-placeholder) 56%
+  );
+  background-size: 220% 100%;
+  animation: image-shimmer 1.4s ease-in-out infinite;
+}
+.image-frame__fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+.image-frame__fallback img {
+  width: min(60%, 314px);
+  height: auto;
+  filter: brightness(0) saturate(100%);
+  opacity: 0.22;
+  object-fit: contain;
+}
+@keyframes image-shimmer {
+  to {
+    background-position-x: -220%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .image-frame__shimmer {
+    animation: none;
+  }
+}
+:root[data-theme="dark"] .image-frame__fallback img {
+  filter: brightness(0) invert(1);
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="system"] .image-frame__fallback img {
+    filter: brightness(0) invert(1);
+  }
+}

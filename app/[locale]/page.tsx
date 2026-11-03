@@ -1,7 +1,7 @@
-import HomePage from "../../features/music/HomePage";
-import { hasLocale, messages } from "../../lib/i18n";
-import { getPosts } from "../../lib/posts";
-import { pageMetadata } from "../../lib/site";
+import HomePage from "@/views/home";
+import { hasLocale, messages } from "@/modules/i18n";
+import { getPosts } from "@/modules/content/server";
+import { pageMetadata } from "@/modules/site";
 import { notFound } from "next/navigation";
 
 type HomeProps = { params: Promise<{ locale: string }> };

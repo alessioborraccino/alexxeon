@@ -1,4 +1,4 @@
-import { siteUrl } from "../lib/site";
+import { siteUrl } from "@/modules/site";
 export const dynamic = "force-static";
 export default function robots() {
   return {

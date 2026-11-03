@@ -1,6 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { youtubeId, normalizePosts, orderPostsLike } from "../lib/content";
+import { youtubeId } from "@/modules/youtube";
+import {
+  normalizePosts,
+  orderPostsLike,
+} from "@/modules/content/internal/normalize";
 import type { PortableTextBlock } from "@portabletext/types";
 test("YouTube links support existing embeds, short links, and Shorts without accepting other hosts", () => {
   for (const url of [

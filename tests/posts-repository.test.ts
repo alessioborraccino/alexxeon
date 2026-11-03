@@ -3,9 +3,9 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, test } from "node:test";
-import type { Post } from "../lib/content";
-import type { Locale } from "../lib/i18n";
-import { StaticJsonPostsRepository } from "../lib/posts/static-json-posts-repository";
+import type { Post } from "@/modules/content";
+import type { Locale } from "@/modules/i18n";
+import { StaticJsonPostsRepository } from "@/modules/content/internal/static-json-posts-repository";
 
 const temporaryDirectories: string[] = [];
 

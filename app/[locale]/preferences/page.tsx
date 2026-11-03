@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import Preferences from "../../../components/Preferences";
-import { hasLocale, messages } from "../../../lib/i18n";
-import { pageMetadata } from "../../../lib/site";
+import Preferences from "@/views/preferences";
+import { hasLocale, messages } from "@/modules/i18n";
+import { pageMetadata } from "@/modules/site";
 
 type PreferencesPageProps = { params: Promise<{ locale: string }> };
 

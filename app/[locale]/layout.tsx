@@ -1,11 +1,13 @@
-import "../globals.css";
+import "@/app/globals.css";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import Header from "../../components/Header";
-import Socials from "../../components/Socials";
-import { hasLocale, locales, messages } from "../../lib/i18n";
-import { siteUrl, socials } from "../../lib/site";
-import { PreferencesProvider, themeBootstrapScript } from "../../preferences";
+import { Header, Socials } from "@/views/layout";
+import { hasLocale, locales, messages } from "@/modules/i18n";
+import { siteUrl, socials } from "@/modules/site";
+import {
+  PreferencesProvider,
+  themeBootstrapScript,
+} from "@/modules/preferences";
 
 export const dynamicParams = false;
 

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import Lyrics from "../components/Lyrics";
+import Lyrics from "@/views/song/Lyrics";
 
 test("lyrics render safely with line breaks and localized headings", () => {
   for (const [locale, heading] of [

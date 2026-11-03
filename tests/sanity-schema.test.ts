@@ -5,7 +5,7 @@ import {
   validatePostSlug,
   validateYoutubeUrl,
   isPostSlugUnique,
-} from "../sanity/schemas/post-validation";
+} from "@/sanity/schemas/post-validation";
 
 test("slug uniqueness scopes checks to language and excludes both document versions", async () => {
   for (const language of [undefined, "en", "it", "de"]) {

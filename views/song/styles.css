@@ -1,0 +1,49 @@
+.song {
+  max-width: 850px;
+  min-height: 60vh;
+}
+.prose {
+  font-size: var(--font-size-prose);
+}
+.lyrics__text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: var(--font-size-prose);
+}
+.song-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+.song-actions .button {
+  margin-top: 0;
+  border: 0;
+  font: inherit;
+  font-weight: var(--font-weight-emphasis);
+  min-height: 44px;
+}
+.share-song__status:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.share-song__link {
+  flex-basis: 100%;
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+.share-song__link input {
+  width: 100%;
+  min-width: 0;
+  padding: 0.75rem;
+  font: inherit;
+  color: var(--control-foreground);
+  background: var(--control-background);
+  border: 1px solid var(--control-border);
+  border-radius: 0.4rem;
+}

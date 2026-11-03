@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { expect, test, type Locator } from "@playwright/test";
-import type { Post } from "../../lib/content";
+import type { Post } from "@/modules/content";
 
 const postsByLocale = JSON.parse(
   await readFile(".generated/posts.json", "utf8"),
@@ -404,7 +404,22 @@ test("sharing copies the canonical localized song URL", async ({ page }) => {
   await copy.click();
   const url = `https://www.alexxeon.com/it/music/${slug}/`;
   await expect(page.locator("html")).toHaveAttribute("data-copied", url);
-  await expect(page.getByRole("status")).toHaveText("Link copiato.");
+  const toast = page.locator(".toast");
+  await expect(toast).toHaveText("✓Link copiato.");
+  await expect(toast).toHaveCSS("position", "fixed");
+  const position = await toast.boundingBox();
+  const viewport = page.viewportSize();
+  if (!position || !viewport)
+    throw new Error("Toast or viewport bounds unavailable");
+  expect(
+    Math.abs(position.x + position.width / 2 - viewport.width / 2),
+  ).toBeLessThan(1);
+  expect(
+    Math.abs(viewport.height - position.y - position.height - 24),
+  ).toBeLessThan(1);
+  await expect(toast).toHaveCount(0, { timeout: 4500 });
+  await copy.click();
+  await expect(toast).toBeVisible();
   await expect(page.getByLabel("Link della canzone")).toHaveCount(0);
   await expect(page.locator(".song-actions > .button")).toHaveCount(2);
   await expect(page.locator("details.share-song")).toHaveCount(0);
@@ -438,6 +453,7 @@ test("sharing handles native cancellation and clipboard failure", async ({
     `https://www.alexxeon.com/en/music/${slug}/`,
   );
   await expect(page.getByRole("status")).toBeEmpty();
+  await expect(page.locator(".toast")).toHaveCount(0);
   await page.evaluate(() => {
     Object.defineProperty(navigator, "share", {
       configurable: true,
@@ -451,4 +467,33 @@ test("sharing handles native cancellation and clipboard failure", async ({
     "Copy failed. Select and copy the link below.",
   );
   await expect(page.getByLabel("Song link")).toBeVisible();
+  await expect(page.locator(".toast")).toHaveCount(0);
+});
+
+test("successful native sharing does not show a copied toast", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, "share", {
+      configurable: true,
+      value: async () => {
+        document.documentElement.dataset.shared = "yes";
+      },
+    });
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: {
+        writeText: async () => {
+          document.documentElement.dataset.copied = "yes";
+        },
+      },
+    });
+  });
+  await page.goto(`/en/music/${posts[0].slug}/`);
+  const share = page.getByRole("button", { name: "Share", exact: true });
+  await waitForHydration(share);
+  await share.click();
+  await expect(page.locator("html")).toHaveAttribute("data-shared", "yes");
+  await expect(page.locator("html")).not.toHaveAttribute("data-copied");
+  await expect(page.locator(".toast")).toHaveCount(0);
 });

@@ -4,7 +4,7 @@ import {
   getPreferredLocale,
   isTheme,
   replacePathLocale,
-} from "../preferences/model";
+} from "@/modules/preferences/internal/model";
 
 test("theme validation accepts only supported theme options", () => {
   assert.equal(isTheme("system"), true);

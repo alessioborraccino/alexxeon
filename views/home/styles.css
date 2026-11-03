@@ -1,0 +1,32 @@
+.hero {
+  max-width: 1160px;
+  margin: auto;
+  padding: 3rem 1.5rem;
+}
+.hero {
+  padding-block: 4rem;
+  max-width: 850px;
+  text-align: center;
+}
+.hero p {
+  font-size: var(--font-size-lead);
+}
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+@media (orientation: landscape) and (max-height: 700px) {
+  .hero {
+    padding-left: max(1.5rem, calc(env(safe-area-inset-left, 0px) + 1.5rem));
+    padding-right: max(1.5rem, calc(env(safe-area-inset-right, 0px) + 1.5rem));
+  }
+}
+@media (max-width: 650px) {
+  .music-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero {
+    padding-block: 2.5rem;
+  }
+}

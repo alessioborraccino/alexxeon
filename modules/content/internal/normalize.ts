@@ -1,0 +1,119 @@
+import type { Post } from "./post";
+import { youtubeId } from "@/modules/youtube";
+import { plainText } from "./plain-text";
+import type { PortableTextBlock } from "@portabletext/types";
+
+export interface SanityPostInput {
+  _id: string;
+  language?: string | null;
+  title?: string | null;
+  slug?: { current?: string | null } | null;
+  body?: PortableTextBlock[] | null;
+  lyrics?: string | null;
+  mainVideo?: { url?: string | null } | null;
+  publishedAt?: string | null;
+  _updatedAt?: string | null;
+}
+
+export function normalizePosts(posts: SanityPostInput[]): Post[] {
+  const slugs = new Set<string>();
+  return posts.map((post) => {
+    const slug = post.slug?.current;
+    const videoUrl = post.mainVideo?.url;
+    const videoId = youtubeId(videoUrl);
+    if (
+      typeof post.title !== "string" ||
+      post.title.trim().length === 0 ||
+      typeof slug !== "string" ||
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ||
+      slugs.has(slug)
+    ) {
+      throw new Error(
+        `Post ${post._id} needs a unique URL-safe slug and title before publishing.`,
+      );
+    }
+    if (videoUrl && !videoId) {
+      throw new Error(
+        `Post ${post._id} has an invalid YouTube URL. Use a valid youtube.com or youtu.be video link.`,
+      );
+    }
+    if (post.lyrics != null && typeof post.lyrics !== "string") {
+      throw new Error(`Post ${post._id} lyrics must be plain text.`);
+    }
+    if (post.body != null && !Array.isArray(post.body)) {
+      throw new Error(`Post ${post._id} body must be a Portable Text array.`);
+    }
+    for (const block of post.body || []) {
+      const value = block as unknown as Record<string, unknown>;
+      if (!block || typeof value._type !== "string") {
+        throw new Error(
+          `Post ${post._id} body contains a block without a valid _type.`,
+        );
+      }
+      if (
+        value._type === "block" &&
+        (!Array.isArray(value.children) ||
+          value.children.some(
+            (child) =>
+              !child ||
+              typeof child !== "object" ||
+              !("text" in child) ||
+              typeof child.text !== "string",
+          ))
+      ) {
+        throw new Error(
+          `Post ${post._id} contains malformed Portable Text. Check its text blocks.`,
+        );
+      }
+      if (value._type === "youtube" && !youtubeId(value.url as string)) {
+        throw new Error(
+          `Post ${post._id} body contains an invalid YouTube video URL.`,
+        );
+      }
+      if (value._type === "image") {
+        const asset = value.asset as { _ref?: unknown } | undefined;
+        if (
+          typeof asset?._ref !== "string" ||
+          !/^image-.+-\d+x\d+-\w+$/.test(asset._ref)
+        ) {
+          throw new Error(
+            `Post ${post._id} body contains an invalid image asset.`,
+          );
+        }
+      }
+      if (!["block", "youtube", "image"].includes(value._type)) {
+        throw new Error(
+          `Post ${post._id} body contains unsupported block type ${value._type}.`,
+        );
+      }
+    }
+    slugs.add(slug);
+    return {
+      _id: post._id,
+      title: post.title,
+      slug,
+      body: post.body,
+      lyrics: post.lyrics,
+      mainVideo: post.mainVideo,
+      publishedAt: post.publishedAt,
+      _updatedAt: post._updatedAt,
+      videoId,
+      description:
+        plainText(post.body || []).slice(0, 160) ||
+        `Listen to ${post.title} by Alexx Eon.`,
+    };
+  });
+}
+
+/** Keeps translated post lists in the same order as the canonical language. */
+export function orderPostsLike<T extends { slug: string }>(
+  posts: T[],
+  reference: readonly { slug: string }[],
+): T[] {
+  const order = new Map(reference.map((post, index) => [post.slug, index]));
+  return [...posts].sort(
+    (a, b) =>
+      (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+      (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
+  );
+}

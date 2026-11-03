@@ -1,0 +1,36 @@
+.video {
+  aspect-ratio: 16/9;
+  position: relative;
+  background: var(--video-background);
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+.video iframe,
+.video-preview {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  padding: 0;
+}
+.video-preview {
+  position: relative;
+  background: var(--video-background);
+}
+.video-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--color-white);
+  background: var(--play-button-background);
+  border-radius: 1rem;
+  padding: 0.25rem 1.4rem;
+  font-size: var(--font-size-play-button);
+}
