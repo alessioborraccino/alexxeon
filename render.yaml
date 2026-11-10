@@ -4,6 +4,13 @@ services:
     runtime: static
     buildCommand: npm ci && npm test && npm run build && npm run check:export
     staticPublishPath: ./out
+    routes:
+      - type: redirect
+        source: /bio
+        destination: /en/bio/
+      - type: redirect
+        source: /bio/
+        destination: /en/bio/
     headers:
       - path: /_next/static/*
         name: Cache-Control
