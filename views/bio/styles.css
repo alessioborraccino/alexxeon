@@ -6,6 +6,9 @@
 .bio {
   max-width: 1040px;
 }
+.bio > h1 {
+  text-align: center;
+}
 .bio > p {
   max-width: 750px;
   margin: 2rem auto;
