@@ -13,11 +13,10 @@ import { usePathname, useRouter } from "next/navigation";
 import type { Locale } from "@/modules/i18n";
 import {
   readThemePreference,
-  replacePathLocale,
   saveLanguagePreference,
   saveThemePreference,
-  type Theme,
-} from "./model";
+} from "./storage";
+import { replacePathLocale, type Theme } from "./model";
 
 export interface PreferencesContextValue {
   locale: Locale;

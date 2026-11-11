@@ -3,18 +3,6 @@ export {
   usePreferences,
   type PreferencesContextValue,
 } from "./internal/PreferencesProvider";
-export {
-  getPreferredLocale,
-  isLocale,
-  isTheme,
-  languageStorageKey,
-  readLanguagePreference,
-  readThemePreference,
-  replacePathLocale,
-  saveLanguagePreference,
-  saveThemePreference,
-  themeBootstrapScript,
-  themeStorageKey,
-  type Theme,
-} from "./internal/model";
+export { getPreferredLocale, isTheme, type Theme } from "./internal/model";
+export { readLanguagePreference } from "./internal/storage";
 export { ThemeScript } from "./internal/ThemeScript";

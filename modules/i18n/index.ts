@@ -14,6 +14,6 @@ export const localeNames: Record<Locale, string> = {
 export const messages = { en, it, de };
 export type Messages = (typeof messages)[Locale];
 
-export function hasLocale(value: string): value is Locale {
+export function hasLocale(value: string | null): value is Locale {
   return locales.some((locale) => locale === value);
 }

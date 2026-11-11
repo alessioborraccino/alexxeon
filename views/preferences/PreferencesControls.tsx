@@ -1,6 +1,6 @@
 "use client";
-import { localeNames, locales, messages } from "@/modules/i18n";
-import { isLocale, usePreferences } from "@/modules/preferences";
+import { hasLocale, localeNames, locales, messages } from "@/modules/i18n";
+import { usePreferences } from "@/modules/preferences";
 import { SelectField } from "@/ui";
 import ThemeControl from "./ThemeControl";
 
@@ -15,7 +15,7 @@ export default function PreferencesControls() {
         value={locale}
         onChange={(event) => {
           const value = event.currentTarget.value;
-          if (isLocale(value)) setLanguage(value);
+          if (hasLocale(value)) setLanguage(value);
         }}
       >
         {locales.map((item) => (

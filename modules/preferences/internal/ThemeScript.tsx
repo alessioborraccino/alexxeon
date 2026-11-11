@@ -1,4 +1,6 @@
-import { themeBootstrapScript } from "./model";
+import { themeStorageKey } from "./storage";
+
+export const themeBootstrapScript = `(() => { try { const theme = localStorage.getItem("${themeStorageKey}"); document.documentElement.dataset.theme = theme === "light" || theme === "dark" ? theme : "system"; } catch { document.documentElement.dataset.theme = "system"; } })();`;
 
 export function ThemeScript() {
   return (
