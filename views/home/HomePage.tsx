@@ -1,6 +1,7 @@
+import { Page, ButtonLink, Card } from "@/ui";
 import Link from "next/link";
 import { Video } from "@/modules/youtube";
-import { ButtonLink, Card } from "@/ui";
+
 import type { Post } from "@/modules/content";
 import { messages, type Locale } from "@/modules/i18n";
 
@@ -14,7 +15,7 @@ export default function HomePage({ posts, locale }: HomePageProps) {
   const featuredPost = posts[0];
 
   return (
-    <main id="main">
+    <Page>
       <section className="hero">
         <p className="eyebrow">{t.eyebrow}</p>
         <h1>Alexx Eon</h1>
@@ -46,6 +47,6 @@ export default function HomePage({ posts, locale }: HomePageProps) {
           ))}
         </div>
       </section>
-    </main>
+    </Page>
   );
 }

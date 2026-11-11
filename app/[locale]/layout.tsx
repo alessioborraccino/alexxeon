@@ -1,13 +1,13 @@
+import {
+  resolveLocaleParams,
+  type LocalizedPageProps,
+} from "@/modules/i18n/server";
 import "@/app/globals.css";
-import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { Header, Socials } from "@/views/layout";
-import { hasLocale, locales, messages } from "@/modules/i18n";
+import { locales, messages } from "@/modules/i18n";
 import { siteUrl, socials } from "@/modules/site";
-import {
-  PreferencesProvider,
-  themeBootstrapScript,
-} from "@/modules/preferences";
+import { PreferencesProvider, ThemeScript } from "@/modules/preferences";
 
 export const dynamicParams = false;
 
@@ -15,14 +15,10 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
 
-type LocaleLayoutProps = {
-  children: ReactNode;
-  params: Promise<{ locale: string }>;
-};
+type LocaleLayoutProps = LocalizedPageProps & { children: ReactNode };
 
 export async function generateMetadata({ params }: LocaleLayoutProps) {
-  const { locale: value } = await params;
-  if (!hasLocale(value)) notFound();
+  const { locale: value } = await resolveLocaleParams(params);
   const t = messages[value];
   return {
     metadataBase: new URL(siteUrl),
@@ -43,8 +39,7 @@ export default async function LocaleLayout({
   children,
   params,
 }: LocaleLayoutProps) {
-  const { locale: value } = await params;
-  if (!hasLocale(value)) notFound();
+  const { locale: value } = await resolveLocaleParams(params);
   const t = messages[value];
   const artist = {
     "@context": "https://schema.org",
@@ -59,13 +54,7 @@ export default async function LocaleLayout({
   return (
     <html lang={value}>
       <head>
-        <script
-          // Set saved theme before first paint to avoid a theme flash.
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: This fixed inline script reads one localStorage key and applies a validated theme value before first paint.
-          dangerouslySetInnerHTML={{
-            __html: themeBootstrapScript,
-          }}
-        />
+        <ThemeScript />
       </head>
       <body>
         <a className="skip-link" href="#main">

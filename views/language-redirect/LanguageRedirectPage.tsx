@@ -1,5 +1,7 @@
 "use client";
 
+import { Page } from "@/ui";
+
 import { useEffect } from "react";
 import { localeNames, locales } from "@/modules/i18n";
 import {
@@ -17,7 +19,7 @@ export default function LanguageRedirect() {
   }, []);
 
   return (
-    <main id="main" className="section">
+    <Page className="section">
       <p role="status">Loading…</p>
       <nav aria-label="Choose your language">
         <ul>
@@ -30,6 +32,6 @@ export default function LanguageRedirect() {
           ))}
         </ul>
       </nav>
-    </main>
+    </Page>
   );
 }

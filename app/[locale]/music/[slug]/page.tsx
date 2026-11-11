@@ -1,3 +1,7 @@
+import {
+  resolveLocaleParams,
+  type LocalizedPageProps,
+} from "@/modules/i18n/server";
 import { notFound } from "next/navigation";
 import { getPostBySlug, getPosts } from "@/modules/content/server";
 import { hasLocale, messages } from "@/modules/i18n";
@@ -12,10 +16,9 @@ export async function generateStaticParams({
   if (!hasLocale(params.locale)) return [];
   return (await getPosts(params.locale)).map(({ slug }) => ({ slug }));
 }
-type SongPageProps = { params: Promise<{ locale: string; slug: string }> };
+type SongPageProps = LocalizedPageProps<{ locale: string; slug: string }>;
 export async function generateMetadata({ params }: SongPageProps) {
-  const { locale, slug } = await params;
-  if (!hasLocale(locale)) notFound();
+  const { locale, slug } = await resolveLocaleParams(params);
   const post = await getPostBySlug(locale, slug);
   return post
     ? pageMetadata(
@@ -27,8 +30,7 @@ export async function generateMetadata({ params }: SongPageProps) {
     : {};
 }
 export default async function Song({ params }: SongPageProps) {
-  const { locale, slug } = await params;
-  if (!hasLocale(locale)) notFound();
+  const { locale, slug } = await resolveLocaleParams(params);
   const post = await getPostBySlug(locale, slug);
   if (!post) notFound();
   return <SongPage post={post} locale={locale} />;

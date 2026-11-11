@@ -1,37 +1,14 @@
-"use client";
+import { messages, type Locale } from "@/modules/i18n";
+import { Page } from "@/ui";
+import PreferencesControls from "./PreferencesControls";
 
-import { localeNames, locales, messages } from "@/modules/i18n";
-import { isLocale, usePreferences } from "@/modules/preferences";
-import ThemeControl from "./ThemeControl";
-
-export default function Preferences() {
-  const { locale, setLanguage } = usePreferences();
+export default function PreferencesPage({ locale }: { locale: Locale }) {
   const t = messages[locale];
-
   return (
-    <main id="main" className="section preferences">
+    <Page className="section preferences">
       <h1>{t.preferences}</h1>
       <p>{t.preferencesDescription}</p>
-      <div className="preferences__controls">
-        <label className="language-control">
-          <span>{t.language}</span>
-          <select
-            aria-label={t.language}
-            value={locale}
-            onChange={(event) => {
-              const value = event.currentTarget.value;
-              if (isLocale(value)) setLanguage(value);
-            }}
-          >
-            {locales.map((item) => (
-              <option value={item} key={item}>
-                {localeNames[item]}
-              </option>
-            ))}
-          </select>
-        </label>
-        <ThemeControl />
-      </div>
-    </main>
+      <PreferencesControls />
+    </Page>
   );
 }

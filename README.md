@@ -45,7 +45,18 @@ sanity/                   Independently configured content editing Studio
 `views/` is deliberately named differently from `pages/`: Next.js reserves a root
 `pages/` directory for its other router. Route files validate route parameters,
 load data through public module interfaces, and render the matching view. Page
-components receive data through typed props. Each view owns its supporting
+components receive data through typed props. Localized routes and metadata use
+`resolveLocaleParams` from `@/modules/i18n/server` for the same locale validation
+and 404 behavior. Page views compose the shared `Page` main landmark; interactive
+controls remain client components beneath those views. Preferences follows this
+pattern too: its route passes the locale to a server view, while its controls use
+the preferences provider. The root language redirect is an intentional client
+view because it reads browser preferences.
+
+Use `SelectField` for labeled selects, `Button` for styled actions, and
+`ButtonLink` for styled navigation. Specialized navigation toggles and video
+previews keep their own semantics and styling. Both document layouts use the
+preferences module's `ThemeScript` to initialize the saved theme before paint. Each view owns its supporting
 components and styles.
 
 Import shared components from `@/ui`, modules from `@/modules/<name>`, and views

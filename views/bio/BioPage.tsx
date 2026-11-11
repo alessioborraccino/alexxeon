@@ -1,5 +1,5 @@
+import { Page, ImageWithPlaceholder } from "@/ui";
 import { messages, type Locale } from "@/modules/i18n";
-import { ImageWithPlaceholder } from "@/ui";
 
 function Photo({ name, alt }: { name: string; alt: string }) {
   return (
@@ -26,7 +26,7 @@ function Photo({ name, alt }: { name: string; alt: string }) {
 export default function BioPage({ locale }: { locale: Locale }) {
   const t = messages[locale];
   return (
-    <main id="main" className="section bio">
+    <Page className="section bio">
       <h1>{t.aboutArtist}</h1>
       <p>{t.bioParagraphs[0]}</p>
       <div className="photo-grid">
@@ -49,6 +49,6 @@ export default function BioPage({ locale }: { locale: Locale }) {
         <Photo name="mystery-green-door" alt="Alexx Eon beside a green door" />
         <Photo name="thinker-right" alt="Side portrait of Alexx Eon" />
       </div>
-    </main>
+    </Page>
   );
 }

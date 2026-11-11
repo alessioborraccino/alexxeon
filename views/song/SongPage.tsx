@@ -1,3 +1,4 @@
+import { Page, ButtonLink } from "@/ui";
 import Link from "next/link";
 import { messages, type Locale } from "@/modules/i18n";
 import { siteUrl } from "@/modules/site";
@@ -5,7 +6,7 @@ import Lyrics from "./Lyrics";
 import ShareSong from "./ShareSong";
 import { Video } from "@/modules/youtube";
 import { Body } from "@/modules/content";
-import { ButtonLink } from "@/ui";
+
 import type { Post } from "@/modules/content";
 
 export default function SongPage({
@@ -18,7 +19,7 @@ export default function SongPage({
   const t = messages[locale];
   const slug = post.slug;
   return (
-    <main id="main" className="section song">
+    <Page className="section song">
       <Link href={`/${locale}/#music`}>{t.allMusic}</Link>
       <h1>{post.title}</h1>
       <p className="eyebrow">{t.version}</p>
@@ -39,6 +40,6 @@ export default function SongPage({
           locale={locale}
         />
       </div>
-    </main>
+    </Page>
   );
 }

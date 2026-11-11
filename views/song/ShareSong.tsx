@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { messages, type Locale } from "@/modules/i18n";
-import { Toast } from "@/ui";
+import { Button, Toast } from "@/ui";
 
 export default function ShareSong({
   title,
@@ -44,9 +44,7 @@ export default function ShareSong({
 
   return (
     <>
-      <button type="button" className="button" onClick={share}>
-        {t.share}
-      </button>
+      <Button onClick={share}>{t.share}</Button>
       {showToast && (
         <Toast key={toastKey} message={t.linkCopied} onDismiss={dismissToast} />
       )}

@@ -1,6 +1,6 @@
 import "@/app/globals.css";
 import type { ReactNode } from "react";
-import { themeBootstrapScript } from "@/modules/preferences";
+import { ThemeScript } from "@/modules/preferences";
 
 export default function DefaultLocaleLayout({
   children,
@@ -10,13 +10,7 @@ export default function DefaultLocaleLayout({
   return (
     <html lang="en">
       <head>
-        <script
-          // Set saved theme before first paint to avoid a theme flash.
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: This fixed inline script reads one localStorage key and applies a validated theme value before first paint.
-          dangerouslySetInnerHTML={{
-            __html: themeBootstrapScript,
-          }}
-        />
+        <ThemeScript />
       </head>
       <body>{children}</body>
     </html>

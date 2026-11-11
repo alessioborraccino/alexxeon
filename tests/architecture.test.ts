@@ -135,3 +135,15 @@ test("client dependency graphs cannot reach server or build code", () => {
     check(client);
   }
 });
+
+test("page views stay independent of routing and server data access", () => {
+  for (const { file, target } of imports) {
+    if (!file.startsWith("views/")) continue;
+    assert.ok(
+      !target.startsWith("app/") &&
+        !/^modules\/[^/]+\/(server|build)\.ts$/.test(target) &&
+        target !== "next/navigation",
+      `${file} must receive page data through props or a client provider: ${target}`,
+    );
+  }
+});

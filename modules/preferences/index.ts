@@ -17,3 +17,4 @@ export {
   themeStorageKey,
   type Theme,
 } from "./internal/model";
+export { ThemeScript } from "./internal/ThemeScript";
